@@ -3,27 +3,19 @@ using MemoScope.Core;
 using Microsoft.Diagnostics.Runtime;
 using System.Diagnostics;
 using System.IO;
-using System.Windows.Forms;
 using WinFwk.UITools;
 
 namespace MemoScope.Modules.Modules
 {
     public class ModuleInformation
     {
-        private ClrModule module;
+        private readonly ClrModule module;
 
         public ModuleInformation(ClrDump clrDump, ClrModule module)
         {
             this.module = module;
             DebuggingMode = module.DebuggingMode;
-            Pdb = clrDump.Eval(() =>
-           {
-               if (module.IsFile && module.Pdb != null)
-               {
-                   return module.Pdb.FileName;
-               }
-               return null;
-           });
+            Pdb = clrDump.Eval(() => module.IsFile && module.Pdb != null ? module.Pdb.FileName : null);
         }
 
         [OLVColumn]

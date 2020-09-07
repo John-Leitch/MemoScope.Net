@@ -1,12 +1,12 @@
-﻿using MemoScope.Core;
-using System.Collections.Generic;
-using BrightIdeasSoftware;
-using MemoScope.Modules.Arrays;
-using MemoScope.Core.Helpers;
-using System.Windows.Forms;
-using MemoScope.Modules.InstanceDetails;
-using WinFwk.UITools.Log;
+﻿using BrightIdeasSoftware;
+using MemoScope.Core;
 using MemoScope.Core.Data;
+using MemoScope.Core.Helpers;
+using MemoScope.Modules.Arrays;
+using MemoScope.Modules.InstanceDetails;
+using System.Collections.Generic;
+using System.Windows.Forms;
+using WinFwk.UITools.Log;
 
 namespace MemoScope.Modules.ArrayInstances
 {
@@ -15,10 +15,7 @@ namespace MemoScope.Modules.ArrayInstances
         private ArraysAddressList ArrayAddressList { get; set; }
         private List<ArrayInstanceInformation> ArrayInstances { get; set; }
 
-        public ArrayInstancesModule()
-        {
-            InitializeComponent();
-        }
+        public ArrayInstancesModule() => InitializeComponent();
 
         public void Setup(ArraysAddressList arrayAddressList)
         {
@@ -32,14 +29,11 @@ namespace MemoScope.Modules.ArrayInstances
             dlvArrays.CellClick += OnCellClick;
         }
 
-        public override void Init()
-        {
-            ArrayInstances = ArrayInstanceAnalysis.Analyze(ArrayAddressList, MessageBus);
-        }
+        public override void Init() => ArrayInstances = ArrayInstanceAnalysis.Analyze(ArrayAddressList, MessageBus);
 
         private void OnCellClick(object sender, CellClickEventArgs e)
         {
-            if( e.ClickCount == 2 && e.Model != null)
+            if (e.ClickCount == 2 && e.Model != null)
             {
                 var arrayInstance = dlvArrays.SelectedObject<ArrayInstanceInformation>();
                 if (arrayInstance != null)

@@ -1,7 +1,7 @@
-﻿using System.Diagnostics;
-using System.ServiceModel;
-using MemoScopeApi;
+﻿using MemoScopeApi;
 using NUnit.Framework;
+using System.Diagnostics;
+using System.ServiceModel;
 
 namespace UnitTestProject
 {
@@ -28,9 +28,6 @@ namespace UnitTestProject
     {
         public int DumpMeReceived { get; private set; }
 
-        public void DumpMe(int processId)
-        {
-            DumpMeReceived ++;
-        }
+        public void DumpMe(int processId) => DumpMeReceived++;
     }
 }

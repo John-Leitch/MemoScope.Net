@@ -1,16 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.Diagnostics.Runtime;
+using System.Collections.Generic;
 using System.IO;
-using System.Xml.Serialization;
-using Microsoft.Diagnostics.Runtime;
 using System.Linq;
+using System.Xml.Serialization;
 
 namespace MemoScope.Core.Bookmarks
 {
     public class BookmarkMgr
     {
-        private string bookmarkPath;
+        private readonly string bookmarkPath;
         private XmlSerializer xml;
-        private XmlSerializer XML { get {
+        private XmlSerializer XML
+        {
+            get
+            {
                 if (xml == null)
                 {
                     xml = new XmlSerializer(typeof(List<Bookmark>));
@@ -21,10 +24,7 @@ namespace MemoScope.Core.Bookmarks
 
         private Dictionary<ulong, Bookmark> bookmarks = new Dictionary<ulong, Bookmark>();
 
-        public BookmarkMgr(string dumpPath)
-        {
-            bookmarkPath = Path.ChangeExtension(dumpPath, "xml");
-        }
+        public BookmarkMgr(string dumpPath) => bookmarkPath = Path.ChangeExtension(dumpPath, "xml");
 
         public List<Bookmark> GetBookmarks()
         {
@@ -42,36 +42,27 @@ namespace MemoScope.Core.Bookmarks
 
         public void Remove(ulong address)
         {
-            if (bookmarks != null && bookmarks.ContainsKey(address))
+            if (bookmarks?.ContainsKey(address) == true)
             {
                 bookmarks.Remove(address);
                 SaveBookmarks();
             }
         }
 
-        public Bookmark Get(ulong address)
-        {
-            Bookmark bookmark;
-            if( bookmarks.TryGetValue(address, out bookmark) )
-            {
-                return bookmark;
-            }
-            return null;
-        }
+        public Bookmark Get(ulong address) => bookmarks.TryGetValue(address, out Bookmark bookmark) ? bookmark : null;
 
         public void Add(ulong address, ClrType clrType)
         {
-            if (bookmarks != null && ! bookmarks.ContainsKey(address) )
+            if (bookmarks?.ContainsKey(address) == false)
             {
-                var bookmark = new Bookmark(address, clrType.Name);
-                bookmarks[address] = bookmark;
+                bookmarks[address] = new Bookmark(address, clrType.Name);
                 SaveBookmarks();
             }
         }
 
         public void SaveBookmarks()
         {
-            if(bookmarks == null)
+            if (bookmarks == null)
             {
                 return;
             }

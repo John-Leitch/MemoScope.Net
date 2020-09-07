@@ -12,33 +12,21 @@ namespace MemoScope.Core.Dac
         {
         }
 
-        [DllImport(libDbghelpDll, EntryPoint = "SymInitialize", SetLastError = true)]
+        [DllImport(libDbghelpDll, EntryPoint = "SymInitialize", SetLastError = true, CharSet = CharSet.Unicode)]
         private static extern bool SymInitialize32(IntPtr hProcess, string symPath, bool fInvadeProcess);
 
         [DllImport(libDbghelpDll, EntryPoint = "SymCleanup", SetLastError = true)]
         private static extern bool SymCleanup32(IntPtr hProcess);
 
-        [DllImport(libDbghelpDll, EntryPoint = "SymFindFileInPath", SetLastError = true)]
+        [DllImport(libDbghelpDll, EntryPoint = "SymFindFileInPath", SetLastError = true, CharSet = CharSet.Unicode)]
         private static extern bool SymFindFileInPath32(IntPtr hProcess, string searchPath, string filename, uint id, uint two, uint three, uint flags, StringBuilder filePath, IntPtr callback, IntPtr context);
 
-        protected override bool SymCleanup(IntPtr hProcess)
-        {
-            return SymCleanup32(hProcess);
-        }
+        protected override bool SymCleanup(IntPtr hProcess) => SymCleanup32(hProcess);
 
-        protected override bool SymInitialize(IntPtr hProcess, string symPath, bool fInvadeProcess)
-        {
-            return SymInitialize32(hProcess, symPath, fInvadeProcess);
-        }
+        protected override bool SymInitialize(IntPtr hProcess, string symPath, bool fInvadeProcess) => SymInitialize32(hProcess, symPath, fInvadeProcess);
 
-        protected override void InitDbgHelpModule()
-        {
-            dbgHelpLib = LoadLibrary(libDbghelpDll);
-        }
+        protected override void InitDbgHelpModule() => dbgHelpLib = LoadLibrary(libDbghelpDll);
 
-        protected override bool SymFindFileInPath(IntPtr hProcess, string searchPath, string filename, uint id, uint two, uint three, uint flags, StringBuilder filePath, IntPtr callback, IntPtr context)
-        {
-            return SymFindFileInPath32(hProcess, searchPath, filename, id, two, three, flags, filePath, callback, context);
-        }
+        protected override bool SymFindFileInPath(IntPtr hProcess, string searchPath, string filename, uint id, uint two, uint three, uint flags, StringBuilder filePath, IntPtr callback, IntPtr context) => SymFindFileInPath32(hProcess, searchPath, filename, id, two, three, flags, filePath, callback, context);
     }
 }

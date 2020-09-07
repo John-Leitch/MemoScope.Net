@@ -1,6 +1,5 @@
-﻿using MemoScope.Core.Data;
-using BrightIdeasSoftware;
-using System.Windows.Forms;
+﻿using BrightIdeasSoftware;
+using MemoScope.Core.Data;
 using WinFwk.UITools;
 
 namespace MemoScope.Modules.Arrays
@@ -8,7 +7,7 @@ namespace MemoScope.Modules.Arrays
     public class ArraysInformation : ITypeNameData
     {
         public ClrDumpType ClrDumpType { get; }
-        public ArraysInformation(ClrDumpType  arrayType)
+        public ArraysInformation(ClrDumpType arrayType)
         {
             ClrDumpType = arrayType;
             TypeName = arrayType.ClrType.Name;

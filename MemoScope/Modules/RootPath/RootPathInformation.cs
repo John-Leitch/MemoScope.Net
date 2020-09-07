@@ -15,7 +15,7 @@ namespace MemoScope.Modules.RootPath
         [OLVColumn]
         public string FieldName { get; }
 
-        ClrDumpObject ClrDumpObject { get; }
+        private ClrDumpObject ClrDumpObject { get; }
         public RootPathInformation(ClrDumpObject clrDumpObject, string fieldName)
         {
             ClrDumpObject = clrDumpObject;

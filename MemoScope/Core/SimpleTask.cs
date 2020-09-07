@@ -11,7 +11,7 @@ namespace MemoScope.Core
 
         public TaskScheduler Scheduler { get; }
 
-        public SimpleTask(Action work, Action callback) : this(work, callback,null, null)
+        public SimpleTask(Action work, Action callback) : this(work, callback, null, null)
         {
         }
 
@@ -19,11 +19,11 @@ namespace MemoScope.Core
         {
         }
 
-        public SimpleTask(Action work, Action callback, TaskScheduler sched)  : this(work, callback, null, sched)
+        public SimpleTask(Action work, Action callback, TaskScheduler sched) : this(work, callback, null, sched)
         {
         }
 
-        public SimpleTask(Action work, Action callback, Action<Exception> onError)  : this(work, callback, onError, null)
+        public SimpleTask(Action work, Action callback, Action<Exception> onError) : this(work, callback, onError, null)
         {
         }
 

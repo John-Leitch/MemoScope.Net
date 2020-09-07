@@ -6,15 +6,12 @@ namespace MemoScope.Modules.TypeDetails
 {
     internal class TypeInformations
     {
-        private ClrDumpType dumpType;
+        private readonly ClrDumpType dumpType;
 
-        public TypeInformations(ClrDumpType dumpType)
-        {
-            this.dumpType = dumpType;
-        }
-        const string CAT_MAIN = "1- Main";
-        const string CAT_FLAGS = "2- Flags";
-        const string CAT_ARRAY = "3- Arrays";
+        public TypeInformations(ClrDumpType dumpType) => this.dumpType = dumpType;
+        private const string CAT_MAIN = "1- Main";
+        private const string CAT_FLAGS = "2- Flags";
+        private const string CAT_ARRAY = "3- Arrays";
 
         [Category(CAT_MAIN)]
         [DisplayName("_ Name _")]

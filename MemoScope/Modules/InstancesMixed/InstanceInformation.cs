@@ -7,7 +7,7 @@ namespace MemoScope.Modules.InstancesMixed
 {
     public class InstanceInformation : IAddressData, ITypeNameData
     {
-        ClrDump ClrDump { get; }
+        private ClrDump ClrDump { get; }
         public ClrType ClrType { get; }
 
         public InstanceInformation(ClrDump clrDump, ulong address)

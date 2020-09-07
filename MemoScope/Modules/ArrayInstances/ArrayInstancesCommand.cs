@@ -1,7 +1,7 @@
-﻿using WinFwk.UICommands;
-using WinFwk.UIModules;
-using MemoScope.Modules.Arrays;
+﻿using MemoScope.Modules.Arrays;
 using System;
+using WinFwk.UICommands;
+using WinFwk.UIModules;
 
 namespace MemoScope.Modules.ArrayInstances
 {
@@ -12,10 +12,7 @@ namespace MemoScope.Modules.ArrayInstances
 
         }
 
-        protected override void HandleData(ArraysAddressList arrayAddressList)
-        {
-            Display(arrayAddressList, selectedModule);
-        }
+        protected override void HandleData(ArraysAddressList arrayAddressList) => Display(arrayAddressList, selectedModule);
 
         public static void Display(ArraysAddressList arrayAddressList, UIModule parentModule)
         {

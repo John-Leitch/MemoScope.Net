@@ -16,13 +16,15 @@ namespace MemoScope.Core
         public SingleThreadWorker(string name)
         {
             Name = name;
-            WorkerThread = new Thread(Run) {Name = name, IsBackground = true};
+            WorkerThread = new Thread(Run) { Name = name, IsBackground = true };
             WorkerThread.Start();
         }
 
         public bool Active => !stopRequested && WorkerThread.IsAlive;
+        
         public void Dispose()
         {
+            queue.Dispose();
             stopRequested = true;
         }
 
@@ -30,9 +32,8 @@ namespace MemoScope.Core
         {
             while (!stopRequested)
             {
-                SimpleTask task;
 
-                if (!queue.TryTake(out task, TimeSpan.FromMilliseconds(100)))
+                if (!queue.TryTake(out SimpleTask task, TimeSpan.FromMilliseconds(100)))
                 {
                     continue;
                 }
@@ -46,7 +47,7 @@ namespace MemoScope.Core
                 }
                 if (task.Callback != null)
                 {
-                    Action callback = () =>
+                    void callback()
                     {
                         try
                         {
@@ -56,7 +57,7 @@ namespace MemoScope.Core
                         {
                             task.OnError?.Invoke(ex);
                         }
-                    };
+                    }
                     if (task.Scheduler == null)
                     {
                         Task.Factory.StartNew(callback);
@@ -69,15 +70,9 @@ namespace MemoScope.Core
             }
         }
 
-        public void RunAsync(Action work, Action callback)
-        {
-            queue.Add(new SimpleTask(work, callback));
-        }
+        public void RunAsync(Action work, Action callback) => queue.Add(new SimpleTask(work, callback));
 
-        public void RunAsync(Action work, Action callback, TaskScheduler sched)
-        {
-            queue.Add(new SimpleTask(work, callback, sched));
-        }
+        public void RunAsync(Action work, Action callback, TaskScheduler sched) => queue.Add(new SimpleTask(work, callback, sched));
 
         public void Run(Action work)
         {
@@ -85,7 +80,7 @@ namespace MemoScope.Core
             queue.Add(new SimpleTask(work, () => myEvent.Set()));
             myEvent.WaitOne();
         }
-        public void Run(Action work, Action<Exception> onError=null)
+        public void Run(Action work, Action<Exception> onError = null)
         {
             ManualResetEvent myEvent = new ManualResetEvent(false);
             queue.Add(new SimpleTask(work, () => myEvent.Set(), onError));

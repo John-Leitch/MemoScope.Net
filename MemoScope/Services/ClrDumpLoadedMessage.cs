@@ -7,9 +7,6 @@ namespace MemoScope.Services
     {
         public ClrDump ClrDump { get; }
 
-        public ClrDumpLoadedMessage(ClrDump clrDump)
-        {
-            ClrDump = clrDump;
-        }
+        public ClrDumpLoadedMessage(ClrDump clrDump) => ClrDump = clrDump;
     }
 }

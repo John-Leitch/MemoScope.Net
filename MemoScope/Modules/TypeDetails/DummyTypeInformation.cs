@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
-using Microsoft.Diagnostics.Runtime;
+﻿using Microsoft.Diagnostics.Runtime;
+using System.Collections.Generic;
 
 namespace MemoScope.Modules.TypeDetails
 {
     public class DummyTypeInformation : AbstractTypeInformation
     {
-        private ClrInterface interf;
+        private readonly ClrInterface interf;
 
         public DummyTypeInformation(ClrInterface interf)
         {

@@ -15,12 +15,12 @@ namespace MemoScope.Modules.Delegates.Targets
 
         protected override void HandleData(ClrDumpObject clrDumpObject)
         {
-            if(clrDumpObject == null || clrDumpObject.ClrType == null)
+            if (clrDumpObject == null || clrDumpObject.ClrType == null)
             {
                 throw new InvalidOperationException("No instance selected !");
             }
 
-            if( ! DelegatesAnalysis.IsDelegateType(clrDumpObject))
+            if (!DelegatesAnalysis.IsDelegateType(clrDumpObject))
             {
                 throw new InvalidOperationException("Selected instance's type is not a delegate !");
             }
@@ -28,9 +28,6 @@ namespace MemoScope.Modules.Delegates.Targets
             Display(selectedModule, clrDumpObject);
         }
 
-        public static void Display(UIModule parentModule, ClrDumpObject clrDumpObject)
-        {
-            UIModuleFactory.CreateModule<DelegateTargetsModule>(module => { module.UIModuleParent = parentModule; module.Setup(clrDumpObject); }, module => DockModule(parentModule.MessageBus, module));
-        }
+        public static void Display(UIModule parentModule, ClrDumpObject clrDumpObject) => UIModuleFactory.CreateModule<DelegateTargetsModule>(module => { module.UIModuleParent = parentModule; module.Setup(clrDumpObject); }, module => DockModule(parentModule.MessageBus, module));
     }
 }

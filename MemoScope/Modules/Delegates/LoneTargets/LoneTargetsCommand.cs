@@ -15,7 +15,7 @@ namespace MemoScope.Modules.Delegates.LoneHandlers
 
         protected override void HandleData(ClrDump clrDump)
         {
-            if( clrDump == null )
+            if (clrDump == null)
             {
                 throw new InvalidOperationException("No dump selected !");
             }
@@ -23,9 +23,6 @@ namespace MemoScope.Modules.Delegates.LoneHandlers
             Display(selectedModule, clrDump);
         }
 
-        public static void Display(UIModule parentModule, ClrDump clrDump)
-        {
-            UIModuleFactory.CreateModule<LoneTargetsModule>(module => { module.UIModuleParent = parentModule; module.Setup(clrDump); }, module => DockModule(parentModule.MessageBus, module));
-        }
+        public static void Display(UIModule parentModule, ClrDump clrDump) => UIModuleFactory.CreateModule<LoneTargetsModule>(module => { module.UIModuleParent = parentModule; module.Setup(clrDump); }, module => DockModule(parentModule.MessageBus, module));
     }
 }

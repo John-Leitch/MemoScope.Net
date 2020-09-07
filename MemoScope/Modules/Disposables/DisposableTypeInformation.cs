@@ -1,7 +1,7 @@
-﻿using MemoScope.Core.Data;
-using BrightIdeasSoftware;
-using WinFwk.UITools;
+﻿using BrightIdeasSoftware;
+using MemoScope.Core.Data;
 using Microsoft.Diagnostics.Runtime;
+using WinFwk.UITools;
 
 namespace MemoScope.Modules.Disposables
 {
@@ -14,7 +14,7 @@ namespace MemoScope.Modules.Disposables
             Count = nbInstances;
         }
 
-        public ClrType ClrType { get; private set; }
+        public ClrType ClrType { get; }
 
         [OLVColumn]
         public string TypeName { get; }

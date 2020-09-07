@@ -8,10 +8,7 @@ namespace MemoScope.Modules.Handles
     public partial class HandlesModule : UIClrDumpModule
     {
         private List<HandleInformation> Handles;
-        public HandlesModule()
-        {
-            InitializeComponent();
-        }
+        public HandlesModule() => InitializeComponent();
 
         public void Setup(ClrDump clrDump)
         {
@@ -25,7 +22,7 @@ namespace MemoScope.Modules.Handles
         public override void Init()
         {
             base.Init();
-            Handles = ClrDump.Handles.Select(handle=> new HandleInformation(ClrDump, handle)).ToList();
+            Handles = ClrDump.Handles.Select(handle => new HandleInformation(ClrDump, handle)).ToList();
             dlvHandles.SetUpAddressColumn(nameof(HandleInformation.Object), this);
             dlvHandles.SetUpTypeColumn<HandleInformation>(this);
         }

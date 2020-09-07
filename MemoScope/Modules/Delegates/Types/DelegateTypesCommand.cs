@@ -12,9 +12,6 @@ namespace MemoScope.Modules.Delegates.Types
 
         }
 
-        protected override void HandleData(ClrDump clrDump)
-        {
-            UIModuleFactory.CreateModule<DelegateTypesModule>(module => { module.UIModuleParent = selectedModule; module.Setup(clrDump); }, module => DockModule(module));
-        }
+        protected override void HandleData(ClrDump clrDump) => UIModuleFactory.CreateModule<DelegateTypesModule>(module => { module.UIModuleParent = selectedModule; module.Setup(clrDump); }, module => DockModule(module));
     }
 }

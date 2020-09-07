@@ -8,8 +8,8 @@ namespace MemoScope.Modules.Stack
 
     public class StackInstanceInformation : IAddressData, ITypeNameData
     {
-        ClrDump ClrDump { get; }
-        ClrRoot ClrRoot { get; }
+        private ClrDump ClrDump { get; }
+        private ClrRoot ClrRoot { get; }
         public StackInstanceInformation(ClrDump clrDump, ClrRoot clrRoot)
         {
             ClrDump = clrDump;

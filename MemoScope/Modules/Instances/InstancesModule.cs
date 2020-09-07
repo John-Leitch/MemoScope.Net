@@ -1,19 +1,19 @@
 ﻿using BrightIdeasSoftware;
+using ExpressionEvaluator;
+using MemoScope.Core;
 using MemoScope.Core.Data;
 using MemoScope.Core.Helpers;
+using MemoScope.Tools.CodeTriggers;
 using Microsoft.Diagnostics.Runtime;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 using WinFwk.UICommands;
 using WinFwk.UIModules;
-using System.Windows.Forms;
-using System;
-using MemoScope.Core;
-using MemoScope.Tools.CodeTriggers;
-using ExpressionEvaluator;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Threading;
 
 namespace MemoScope.Modules.Instances
 {
@@ -23,19 +23,20 @@ namespace MemoScope.Modules.Instances
         private AddressList AddressList { get; set; }
         private List<Func<bool>> filters;
         private FieldAccessor myFieldAccessor;
-        HashSet<ulong> filteredAddresses = new HashSet<ulong>();
+        private readonly HashSet<ulong> filteredAddresses = new HashSet<ulong>();
 
-        public static void Create(AddressList addresses, UIModule parent, Action<InstancesModule> postInit, string name=null )
+        public static void Create(AddressList addresses, UIModule parent, Action<InstancesModule> postInit, string name = null)
         {
-            if( addresses == null)
+            if (addresses == null)
             {
                 MessageBox.Show("No instances selected !", "Error", MessageBoxButtons.OK);
                 return;
             }
             UIModuleFactory.CreateModule<InstancesModule>(
-                mod => {
+                mod =>
+                {
                     mod.UIModuleParent = parent; mod.Setup(addresses);
-                    if( name != null)
+                    if (name != null)
                     {
                         mod.Name = name;
                     }
@@ -58,8 +59,7 @@ namespace MemoScope.Modules.Instances
             {
                 var fieldNode = o as FieldNode;
                 string prefix = FieldAccessor.GetFuncName(fieldNode.ClrType.ElementType);
-                string code = $" x.{prefix}(\"{fieldNode.FullName}\") ";
-                return code;
+                return $" x.{prefix}(\"{fieldNode.FullName}\") ";
             };
 
             codeTriggersControl.SaveTriggers = triggers =>
@@ -70,11 +70,9 @@ namespace MemoScope.Modules.Instances
 
             codeTriggersControl.LoadTriggers = () =>
             {
-                if (MemoScopeSettings.Instance != null)
-                {
-                    return new List<CodeTrigger>(MemoScopeSettings.Instance.InstanceFilters.Select(t => t.Clone()));
-                }
-                return null;
+                return MemoScopeSettings.Instance != null
+                    ? new List<CodeTrigger>(MemoScopeSettings.Instance.InstanceFilters.Select(t => t.Clone()))
+                    : null;
             };
         }
 
@@ -83,7 +81,7 @@ namespace MemoScope.Modules.Instances
             AddressList = addressList;
             ClrDump = addressList.ClrDump;
             Name = $"#{addressList.ClrDump.Id} - {addressList.ClrType.Name}";
-            myFieldAccessor = new FieldAccessor(ClrDump, addressList.ClrType );
+            myFieldAccessor = new FieldAccessor(ClrDump, addressList.ClrType);
 
             CreateDefaultColumns();
             dlvAdresses.RebuildColumns();
@@ -130,13 +128,15 @@ namespace MemoScope.Modules.Instances
 
         private void AddFieldColumn(FieldNode fieldNode)
         {
-            if( fieldNode == null)
+            if (fieldNode == null)
             {
                 return;
             }
             bool hasSimpleValue = fieldNode.ClrType.HasSimpleValue;
-            var col = new OLVColumn(fieldNode.FullName, null);
-            col.Width = 120;
+            var col = new OLVColumn(fieldNode.FullName, null)
+            {
+                Width = 120
+            };
             switch (fieldNode.ClrType.ElementType)
             {
                 case ClrElementType.Int16:
@@ -175,16 +175,15 @@ namespace MemoScope.Modules.Instances
             {
                 fields.Insert(0, fieldName);
                 var parent = dtlvFields.GetParent(fieldNode);
-                fieldNode =  parent as FieldNode;
-                fieldName = fieldNode == null ? null : fieldNode.FieldName;
+                fieldNode = parent as FieldNode;
+                fieldName = (fieldNode?.FieldName);
             } while (fieldNode != null);
 
             col.AspectGetter = o =>
             {
                 ulong address = (ulong)o;
                 var type = AddressList.ClrType;
-                var val = AddressList.ClrDump.GetFieldValue(address, type, fields);
-                return val;
+                return AddressList.ClrDump.GetFieldValue(address, type, fields);
             };
         }
 
@@ -199,32 +198,22 @@ namespace MemoScope.Modules.Instances
         // Gui thread
         public override void PostInit()
         {
-            var fieldNodes = fieldInfos.Select(fieldInfo=> new FieldNode(fieldInfo.Name, fieldInfo.FieldType, AddressList.ClrDump));
-            dtlvFields.Roots = fieldNodes;
+            dtlvFields.Roots = fieldInfos.Select(fieldInfo => new FieldNode(fieldInfo.Name, fieldInfo.FieldType, AddressList.ClrDump));
             dlvAdresses.VirtualListDataSource = new InstanceVirtualSource(dlvAdresses, AddressList, filteredAddresses);
             Summary = $"{AddressList.Addresses.Count:###,###,###,##0} instances";
             RefreshInstanceCounter();
         }
 
-        ClrDumpType UIDataProvider<ClrDumpType>.Data
-        {
-            get
-            {
-                return new ClrDumpType(AddressList.ClrDump, AddressList.ClrType);
-            }
-        }
+        ClrDumpType UIDataProvider<ClrDumpType>.Data => new ClrDumpType(AddressList.ClrDump, AddressList.ClrType);
 
         ClrDumpObject UIDataProvider<ClrDumpObject>.Data
         {
             get
             {
                 var selectedAddressObj = dlvAdresses.SelectedObject;
-                if( selectedAddressObj is ulong)
-                {
-                    ulong address = (ulong)selectedAddressObj;
-                    return new ClrDumpObject(AddressList.ClrDump, AddressList.ClrDump.GetObjectType(address), address);
-                }
-                return null;
+                return selectedAddressObj is ulong address
+                    ? new ClrDumpObject(AddressList.ClrDump, AddressList.ClrDump.GetObjectType(address), address)
+                    : null;
             }
         }
 
@@ -254,8 +243,9 @@ namespace MemoScope.Modules.Instances
             var token = source.Token;
             BeginTask("Filtering instances...", source);
             dlvAdresses.BeginUpdate();
-            Task.Run(() => FilterAddresses(token)  )
-                .ContinueWith(task => {
+            Task.Run(() => FilterAddresses(token))
+                .ContinueWith(task =>
+                {
                     if (token.IsCancellationRequested)
                     {
                         EndTask("Instances NOT filtered.");
@@ -270,24 +260,16 @@ namespace MemoScope.Modules.Instances
                 }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
-        private void RefreshInstanceCounter()
-        {
-            if (dlvAdresses.UseFiltering)
-            {
-                tsbInstancesCount.Text = $"# instances: {filteredAddresses.Count:###,###,###,##0} / {AddressList.Addresses.Count:###,###,###,##0}";
-            }
-            else
-            {
-                tsbInstancesCount.Text = $"# instances: {AddressList.Addresses.Count:###,###,###,##0}";
-            }
-        }
+        private void RefreshInstanceCounter() => tsbInstancesCount.Text = dlvAdresses.UseFiltering
+                ? $"# instances: {filteredAddresses.Count:###,###,###,##0} / {AddressList.Addresses.Count:###,###,###,##0}"
+                : $"# instances: {AddressList.Addresses.Count:###,###,###,##0}";
 
         private void FilterAddresses(CancellationToken token)
         {
             var addresses = AddressList.Addresses;
             int c = addresses.Count;
             const int batchSize = 1024;
-            for (int i = 0; i < c && ! token.IsCancellationRequested; i += batchSize)
+            for (int i = 0; i < c && !token.IsCancellationRequested; i += batchSize)
             {
                 Status($"Filtering: {i:###,###,###,##0} / {c:###,###,###,##0}");
                 ClrDump.Run(() =>
@@ -303,7 +285,7 @@ namespace MemoScope.Modules.Instances
                         if (token.IsCancellationRequested)
                         {
                             filteredAddresses.Clear();
-                            return ;
+                            return;
                         }
                     }
                 });
@@ -313,8 +295,7 @@ namespace MemoScope.Modules.Instances
         public bool Filter(object modelObject)
         {
             ulong address = (ulong)modelObject;
-            bool b = filteredAddresses.Contains(address);
-            return b;
+            return filteredAddresses.Contains(address);
         }
 
         public bool DoFilter(ulong address)
@@ -323,7 +304,7 @@ namespace MemoScope.Modules.Instances
             foreach (var filter in filters)
             {
                 bool result = filter();
-                if( result)
+                if (result)
                 {
                     return true;
                 }

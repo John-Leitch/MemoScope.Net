@@ -6,16 +6,13 @@ namespace MemoScope.Modules.ThreadPool
 {
     public class ManagedWorkItemInformation : ITypeNameData
     {
-        private ManagedWorkItem workItem;
+        private readonly ManagedWorkItem workItem;
 
-        public ManagedWorkItemInformation(ManagedWorkItem workItem)
-        {
-            this.workItem = workItem;
-        }
+        public ManagedWorkItemInformation(ManagedWorkItem workItem) => this.workItem = workItem;
 
         [OLVColumn]
         public ulong Object => workItem.Object;
-        [OLVColumn(Title="Type")]
+        [OLVColumn(Title = "Type")]
         public string TypeName => workItem.Type.Name;
     }
 }

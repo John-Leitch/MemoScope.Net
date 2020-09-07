@@ -1,6 +1,6 @@
-﻿using System.ComponentModel;
+﻿using MemoScopeApi;
+using System.ComponentModel;
 using System.Diagnostics;
-using MemoScopeApi;
 
 namespace MemoDummy
 {
@@ -10,7 +10,7 @@ namespace MemoDummy
         public override string Description => "Ask MemoScope to dump MemoDumy";
 
         [ReadOnly(true)]
-        public int ProcessId => Process.GetCurrentProcess().Id;
+        public static int ProcessId => Process.GetCurrentProcess().Id;
 
         public override void Run()
         {

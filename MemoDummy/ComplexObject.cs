@@ -20,11 +20,7 @@ namespace MemoDummy
     {
         private static int n = 0;
         protected int backfield_id;
-        public int Id {
-            get {
-                return backfield_id;
-            }
-        }
+        public int Id => backfield_id;
         public double MyDoubleValue { get; set; }
         public string name;
         public MyInterfaceImpl_V1()
@@ -53,7 +49,7 @@ namespace MemoDummy
         public double X { get; set; }
         public double Y { get; set; }
     }
-    public abstract class AnAbstractType 
+    public abstract class AnAbstractType
     {
         public abstract double AbstractDoubleProperty { get; }
         public double MyDoubleProperty { get; set; }
@@ -77,28 +73,29 @@ namespace MemoDummy
     internal class ComplexObject
     {
         static private int n = 0;
-        int id;
+        readonly int id;
         string Desc { get; }
 
         internal StructData StructData => structData;
 
-        double value;
-        InternalData data; 
-        bool isEven;
-        DateTime date;
+        readonly double value;
+        readonly InternalData data;
+        readonly bool isEven;
+        readonly DateTime date;
         TimeSpan time;
         StructData structData;
-        Color color;
+        readonly Color color;
         public string[] SomeStrings { get; set; }
-        int[] someInts;
-        double[] someDoubles;
-        IMyInterface myInterface;
-        AnAbstractType aFieldWithAbstractType;
+
+        readonly int[] someInts;
+        readonly double[] someDoubles;
+        readonly IMyInterface myInterface;
+        readonly AnAbstractType aFieldWithAbstractType;
         public ComplexObject()
         {
             id = n++;
             Desc = "#" + id;
-            data = new InternalData { X = 2 * id, Y = 3 * id * (isEven ? 1 : -1), IsNeg = ! isEven, Desc = (id %3==0 ? null: "_"+Desc+"_") };
+            data = new InternalData { X = 2 * id, Y = 3 * id * (isEven ? 1 : -1), IsNeg = !isEven, Desc = (id % 3 == 0 ? null : "_" + Desc + "_") };
             structData = new StructData();
             switch (id % 3)
             {
@@ -120,10 +117,10 @@ namespace MemoDummy
             value = 4 * id;
             date = new DateTime(2015, 12, 18).AddDays(id);
             time = TimeSpan.Zero.Add(TimeSpan.FromSeconds(id));
-            SomeStrings = new string[id%32];
+            SomeStrings = new string[id % 32];
             someInts = new int[id % 32];
             someDoubles = new double[id % 32];
-            for(int i=0; i < id % 32; i++)
+            for (int i = 0; i < id % 32; i++)
             {
                 int n = (id + i);
                 SomeStrings[i] = n.ToString("X");

@@ -1,17 +1,17 @@
-﻿using Microsoft.Diagnostics.Runtime;
-using BrightIdeasSoftware;
-using MemoScope.Core.Helpers;
+﻿using BrightIdeasSoftware;
 using MemoScope.Core.Data;
+using MemoScope.Core.Helpers;
+using Microsoft.Diagnostics.Runtime;
 using WinFwk.UITools;
 
 namespace MemoScope.Modules.TypeDetails
 {
     public class FieldInformation : ITypeNameData
     {
-        private ClrInstanceField clrField;
-        private ClrDumpType dumpType;
+        private readonly ClrInstanceField clrField;
+        private readonly ClrDumpType dumpType;
 
-        public FieldInformation(ClrDumpType dumpType, ClrInstanceField clrField) 
+        public FieldInformation(ClrDumpType dumpType, ClrInstanceField clrField)
         {
             this.dumpType = dumpType;
             this.clrField = clrField;

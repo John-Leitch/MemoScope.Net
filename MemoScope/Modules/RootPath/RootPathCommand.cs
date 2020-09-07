@@ -15,7 +15,7 @@ namespace MemoScope.Modules.RootPath
 
         protected override void HandleData(ClrDumpObject clrDumpObject)
         {
-            if( clrDumpObject == null)
+            if (clrDumpObject == null)
             {
                 throw new InvalidOperationException("No object selected !");
             }

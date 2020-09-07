@@ -2,7 +2,7 @@
 
 namespace MemoScope.Tools.CodeTriggers
 {
-    public class CodeTrigger 
+    public class CodeTrigger
     {
         public bool Active { get; set; }
 
@@ -15,9 +15,6 @@ namespace MemoScope.Tools.CodeTriggers
         [OLVColumn(FillsFreeSpace = true)]
         public string Code { get; set; }
 
-        public CodeTrigger Clone()
-        {
-            return (CodeTrigger) MemberwiseClone();
-        }
+        public CodeTrigger Clone() => (CodeTrigger)MemberwiseClone();
     }
 }

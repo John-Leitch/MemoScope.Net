@@ -26,7 +26,7 @@ namespace MemoDummy
             ThreadPool.SetMaxThreads(MaxWorkerThreads, MaxCompletionThreads);
             ThreadPool.SetMinThreads(MinWorkerThreads, MinCompletionThreads);
 
-            for (int i=0; i < NbTasks; i++)
+            for (int i = 0; i < NbTasks; i++)
             {
                 ThreadPool.QueueUserWorkItem(CallBack, $"Task_{i}");
             }
@@ -35,7 +35,7 @@ namespace MemoDummy
         private void CallBack(object state)
         {
             int j = 0;
-            for(int i=0; i < 1000; i++)
+            for (int i = 0; i < 1000; i++)
             {
                 j += i;
                 Thread.Sleep(10);

@@ -12,7 +12,7 @@ namespace MemoScope.Modules.RootPath
 {
     public static class RootPathAnalysis
     {
-        static Logger logger = LogManager.GetLogger(typeof(RootPathAnalysis).FullName);
+        private static readonly Logger logger = LogManager.GetLogger(typeof(RootPathAnalysis).FullName);
 
         public static List<RootPathInformation> AnalyzeRootPath(MessageBus msgBus, ClrDumpObject clrDumpObject)
         {
@@ -20,7 +20,7 @@ namespace MemoScope.Modules.RootPath
             ulong address = clrDumpObject.Address;
             CancellationTokenSource token = new CancellationTokenSource();
             msgBus.BeginTask("Analysing Root Path...", token);
-            if( token.IsCancellationRequested)
+            if (token.IsCancellationRequested)
             {
                 msgBus.EndTask("Root Path analysis: cancelled.");
                 return null;
@@ -33,8 +33,10 @@ namespace MemoScope.Modules.RootPath
                 logger.Debug("Roots: " + Str(roots));
             }
             List<ulong> bestPath = null;
-            var currentPath = new List<ulong>();
-            currentPath.Add(address);
+            var currentPath = new List<ulong>
+            {
+                address
+            };
             bool result = FindShortestPath(currentPath, ref bestPath, clrDump);
 
             List<RootPathInformation> path = new List<RootPathInformation>();
@@ -60,24 +62,24 @@ namespace MemoScope.Modules.RootPath
 
         public static bool FindShortestPath(List<ulong> currentPath, ref List<ulong> bestPath, IClrDump clrDump)
         {
-            if(logger.IsDebugEnabled) logger.Debug("FindShortestPath: currentPath: " + Str(currentPath)+", best: "+Str(bestPath));
-            if( bestPath != null && currentPath.Count >= bestPath.Count)
+            if (logger.IsDebugEnabled) logger.Debug("FindShortestPath: currentPath: " + Str(currentPath) + ", best: " + Str(bestPath));
+            if (bestPath != null && currentPath.Count >= bestPath.Count)
             {
                 return false;
             }
             bool res = false;
-            foreach (var refAddress in clrDump.EnumerateReferers(currentPath[currentPath.Count-1]))
+            foreach (var refAddress in clrDump.EnumerateReferers(currentPath[currentPath.Count - 1]))
             {
-                if(currentPath.Contains(refAddress))
+                if (currentPath.Contains(refAddress))
                 {
                     continue;
                 }
                 if (logger.IsDebugEnabled) logger.Debug($"Visiting: {refAddress:X}");
                 currentPath.Add(refAddress);
-                if (! clrDump.HasReferers(refAddress))
+                if (!clrDump.HasReferers(refAddress))
                 {
                     bestPath = new List<ulong>(currentPath);
-                    if (logger.IsDebugEnabled) logger.Debug("Root found !, best path: "+Str(bestPath));
+                    if (logger.IsDebugEnabled) logger.Debug("Root found !, best path: " + Str(bestPath));
                     currentPath.RemoveAt(currentPath.Count - 1);
                     return true;
                 }
@@ -91,22 +93,22 @@ namespace MemoScope.Modules.RootPath
 
         private static string Str(IEnumerable<ulong> ulongEnum)
         {
-            if ( ulongEnum == null || ! ulongEnum.Any()) 
+            if (ulongEnum?.Any() != true)
             {
                 return "[]";
             }
             var s = "[";
             int n = 0;
-            foreach(var u in ulongEnum)
+            foreach (var u in ulongEnum)
             {
                 s += u.ToString("X") + ", ";
-                if( ++n % 128 == 0)
+                if (++n % 128 == 0)
                 {
                     s += "..., ";
                     break;
                 }
             }
-            return s.Substring(0, s.Length-2)+"]";
+            return s.Substring(0, s.Length - 2) + "]";
         }
     }
 }

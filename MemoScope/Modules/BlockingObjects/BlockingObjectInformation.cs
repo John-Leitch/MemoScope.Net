@@ -1,9 +1,9 @@
-﻿using System.Linq;
+﻿using BrightIdeasSoftware;
 using MemoScope.Core;
-using BrightIdeasSoftware;
 using MemoScope.Core.Data;
 using Microsoft.Diagnostics.Runtime;
 using System.Collections.Generic;
+using System.Linq;
 using WinFwk.UITools;
 
 namespace MemoScope.Modules.BlockingObjects
@@ -19,24 +19,16 @@ namespace MemoScope.Modules.BlockingObjects
         {
             ClrDump = clrDump;
             BlockingObject = blockingObject;
-            
-            if (blockingObject.HasSingleOwner && blockingObject.Owner != null)
-            {
-                OwnersId = new HashSet<int>();
-                OwnersId.Add(blockingObject.Owner.ManagedThreadId);
-            }
-            else
-            {
-                OwnersId = new HashSet<int>(blockingObject.Owners.Where(thread  => thread != null).Select(thread => thread.ManagedThreadId));
-            }
-            if (blockingObject.Waiters != null)
-            {
-                WaitersId = new HashSet<int>(blockingObject.Waiters.Where(thread => thread != null).Select(thread => thread.ManagedThreadId));
-            }
-            else
-            {
-                WaitersId = new HashSet<int>();
-            }
+
+            OwnersId = blockingObject.HasSingleOwner && blockingObject.Owner != null
+                ? new HashSet<int>
+                {
+                    blockingObject.Owner.ManagedThreadId
+                }
+                : new HashSet<int>(blockingObject.Owners.Where(thread => thread != null).Select(thread => thread.ManagedThreadId));
+            WaitersId = blockingObject.Waiters != null
+                ? new HashSet<int>(blockingObject.Waiters.Where(thread => thread != null).Select(thread => thread.ManagedThreadId))
+                : new HashSet<int>();
         }
 
         [OLVColumn]
@@ -45,16 +37,16 @@ namespace MemoScope.Modules.BlockingObjects
         [OLVColumn]
         public string TypeName => ClrDump.GetObjectTypeName(BlockingObject.Object);
 
-        [IntColumn(Width=50)]
+        [IntColumn(Width = 50)]
         public int Owners => BlockingObject.HasSingleOwner ? 1 : BlockingObject.Owners.Count;
 
-        [BoolColumn(Width=50)]
+        [BoolColumn(Width = 50)]
         public bool Taken => BlockingObject.Taken;
 
         [OLVColumn]
         public BlockingReason Reason => BlockingObject.Reason;
 
-        [OLVColumn(IsVisible =false)]
+        [OLVColumn(IsVisible = false)]
         public int RecursionCount => BlockingObject.RecursionCount;
     }
 }

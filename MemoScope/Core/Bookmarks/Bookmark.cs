@@ -11,11 +11,11 @@ namespace MemoScope.Core.Bookmarks
         [OLVColumn(IsEditable = false)]
         public ulong Address { get; set; }
 
-        [OLVColumn(IsVisible=false, IsEditable = false)]
+        [OLVColumn(IsVisible = false, IsEditable = false)]
         public string TypeName { get; set; }
 
-        [OLVColumn(IsEditable =true)]
-        public string Comment  { get; set; }
+        [OLVColumn(IsEditable = true)]
+        public string Comment { get; set; }
 
         [XmlIgnore]
         [OLVColumn(Width = 75, IsEditable = false)]
@@ -23,14 +23,11 @@ namespace MemoScope.Core.Bookmarks
 
         [OLVColumn(Title = "Color Pick", TextAlign = HorizontalAlignment.Center, Width = 50, IsEditable = false)]
         [XmlIgnore]
-        public string ColorPick => "...";
+        public static string ColorPick => "...";
 
         public string ColorRGB
         {
-            get
-            {
-                return Color == Color.Empty ? "" : Color.R + "," + Color.G + "," + Color.B;
-            }
+            get => Color == Color.Empty ? "" : Color.R + "," + Color.G + "," + Color.B;
             set
             {
                 if (string.IsNullOrEmpty(value))

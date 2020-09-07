@@ -1,7 +1,7 @@
-﻿using System.ComponentModel;
-using System.Threading;
-using System;
+﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
+using System.Threading;
 
 namespace MemoDummy
 {
@@ -15,7 +15,7 @@ namespace MemoDummy
 
         public override void Run()
         {
-            for(int i=0; i < NbThreads; i++)
+            for (int i = 0; i < NbThreads; i++)
             {
                 Thread thread = new Thread(() =>
                 {
@@ -23,7 +23,7 @@ namespace MemoDummy
                     try
                     {
                         int x = arrayInt[arrayInt.Length];
-                        if( x < 0)
+                        if (x < 0)
                         {
                             Debug.WriteLine("Huh ?");
                         }
@@ -32,8 +32,10 @@ namespace MemoDummy
                     {
                         throw new Exception("Something failed !", e);
                     }
-                });
-                thread.Name = "thread #" + i;
+                })
+                {
+                    Name = "thread #" + i
+                };
                 thread.Start();
             }
         }

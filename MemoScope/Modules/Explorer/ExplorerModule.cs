@@ -1,19 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using BrightIdeasSoftware;
+using MemoScope.Modules.Process;
+using MemoScope.Services;
+using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using BrightIdeasSoftware;
-using WinFwk.UIModules;
-using System;
 using WinFwk.UIMessages;
-using MemoScope.Services;
-using MemoScope.Modules.Process;
+using WinFwk.UIModules;
 using WinFwk.UITools.Settings;
 
 namespace MemoScope.Modules.Explorer
 {
-    public partial class ExplorerModule : UIModule, 
+    public partial class ExplorerModule : UIModule,
         IMessageListener<ClrDumpLoadedMessage>,
         IMessageListener<ProcessDumpedMessage>
     {
@@ -34,8 +34,10 @@ namespace MemoScope.Modules.Explorer
                 var rowObj = e.Model;
                 var data = rowObj as AbstractDumpExplorerData;
                 var cachePath = data.GetCachePath();
-                if(cachePath != null && File.Exists(cachePath) ) {
-                    try {
+                if (cachePath != null && File.Exists(cachePath))
+                {
+                    try
+                    {
                         File.Delete(cachePath);
                     }
                     catch (Exception ex)
@@ -55,7 +57,7 @@ namespace MemoScope.Modules.Explorer
 
             if (rootDirOk)
             {
-                dtlvExplorer.Roots= AbstractDumpExplorerData.GetItems(tbRootDir.Text);
+                dtlvExplorer.Roots = AbstractDumpExplorerData.GetItems(tbRootDir.Text);
                 dtlvExplorer.Refresh();
                 MemoScopeSettings.Instance.RootDir = tbRootDir.Text;
                 MemoScopeSettings.Instance.Save();
@@ -63,10 +65,7 @@ namespace MemoScope.Modules.Explorer
             }
         }
 
-        private void tbRootDir_TextChanged(object sender, System.EventArgs e)
-        {
-           RefreshRootDir();
-        }
+        private void tbRootDir_TextChanged(object sender, System.EventArgs e) => RefreshRootDir();
 
         private void ExplorerModule_Load(object sender, System.EventArgs e)
         {
@@ -84,12 +83,11 @@ namespace MemoScope.Modules.Explorer
             {
                 return;
             }
-            var data = e.Model as AbstractDumpExplorerData;
-            if (data == null)
+            if (!(e.Model is AbstractDumpExplorerData data))
             {
                 return;
             }
-            OpenFilesFromData(new[] {data});
+            OpenFilesFromData(new[] { data });
         }
 
         private void OpenFilesFromData(IEnumerable<AbstractDumpExplorerData> datas)
@@ -124,7 +122,7 @@ namespace MemoScope.Modules.Explorer
 
         private void btnRootDir_Click(object sender, System.EventArgs e)
         {
-            FolderBrowserDialog dialog = new FolderBrowserDialog {ShowNewFolderButton = true, SelectedPath = tbRootDir.Text};
+            FolderBrowserDialog dialog = new FolderBrowserDialog { ShowNewFolderButton = true, SelectedPath = tbRootDir.Text };
 
             if (dialog.ShowDialog() == DialogResult.OK)
             {
@@ -135,23 +133,17 @@ namespace MemoScope.Modules.Explorer
         void IMessageListener<ClrDumpLoadedMessage>.HandleMessage(ClrDumpLoadedMessage message)
         {
             var path = message.ClrDump.DumpPath;
-            foreach(AbstractDumpExplorerData data in dtlvExplorer.Objects)
+            foreach (AbstractDumpExplorerData data in dtlvExplorer.Objects)
             {
-                if( data.FileInfo != null && data.FileInfo.FullName == path)
+                if (data.FileInfo != null && data.FileInfo.FullName == path)
                 {
                     dtlvExplorer.RefreshObject(data);
                 }
             }
         }
 
-        private void btnRefresh_Click(object sender, EventArgs e)
-        {
-            RefreshRootDir();
-        }
+        private void btnRefresh_Click(object sender, EventArgs e) => RefreshRootDir();
 
-        public void HandleMessage(ProcessDumpedMessage message)
-        {
-            RefreshRootDir();
-        }
+        public void HandleMessage(ProcessDumpedMessage message) => RefreshRootDir();
     }
 }

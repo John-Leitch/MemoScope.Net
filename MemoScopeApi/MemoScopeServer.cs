@@ -8,7 +8,7 @@ namespace MemoScopeApi
         public MemoScopeServer(IMemoScopeService service) :
             base(service, new Uri("net.pipe://localhost/"))
         {
-            AddServiceEndpoint(typeof (IMemoScopeService), new NetNamedPipeBinding(), "memoscope");
+            AddServiceEndpoint(typeof(IMemoScopeService), new NetNamedPipeBinding(), "memoscope");
             Open();
         }
     }

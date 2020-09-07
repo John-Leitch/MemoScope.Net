@@ -45,9 +45,9 @@ namespace MemoScope.Modules.InstanceDetails
             tbType.Text = clrDumpObject.ClrType?.Name;
         }
 
-        public override void Init( )
+        public override void Init()
         {
-            if( ClrDumpObject == null)
+            if (ClrDumpObject == null)
             {
                 return;
             }
@@ -55,11 +55,9 @@ namespace MemoScope.Modules.InstanceDetails
             mainFieldValues = FieldValueInformation.GetChildren(ClrDumpObject);
             SimpleValue = ClrDump.Eval(() =>
             {
-                if (SimpleValueHelper.IsSimpleValue(ClrDumpObject.ClrType))
-                {
-                    return SimpleValueHelper.GetSimpleValue(ClrDumpObject.Address, ClrDumpObject.ClrType);
-                }
-                return null;
+                return SimpleValueHelper.IsSimpleValue(ClrDumpObject.ClrType)
+                    ? SimpleValueHelper.GetSimpleValue(ClrDumpObject.Address, ClrDumpObject.ClrType)
+                    : null;
             });
         }
 
@@ -83,6 +81,6 @@ namespace MemoScope.Modules.InstanceDetails
                 Summary = ClrDumpObject.ClrType == null ? "Unkown" : ClrDumpObject.ClrType.Name;
             }
         }
-        public override IEnumerable<ObjectListView> ListViews => new ObjectListView[] { dtlvFieldsValues, dtlvReferences};
+        public override IEnumerable<ObjectListView> ListViews => new ObjectListView[] { dtlvFieldsValues, dtlvReferences };
     }
 }

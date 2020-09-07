@@ -1,16 +1,16 @@
 ﻿using BrightIdeasSoftware;
-using System.Collections.Generic;
 using MemoScope.Core;
+using System.Collections.Generic;
 
 namespace MemoScope.Modules.DumpDiff
 {
     public class DiffColumn : OLVColumn
     {
         public ClrDump ClrDump { get; }
-        private List<ClrTypeStats> stats;
+        private readonly List<ClrTypeStats> stats;
 
-        private Dictionary<string, ClrTypeStats> dicoStats;
-        private Dictionary<string, ClrTypeStats> dicoPrevStats;
+        private readonly Dictionary<string, ClrTypeStats> dicoStats;
+        private readonly Dictionary<string, ClrTypeStats> dicoPrevStats;
 
 
         public DiffColumn(ClrDump clrDump, List<ClrTypeStats> stats, List<ClrTypeStats> prevStats)
@@ -54,18 +54,15 @@ namespace MemoScope.Modules.DumpDiff
 
         private object GetCountForType(object rowObject)
         {
-            string typeName = rowObject as string;
-            ClrTypeStats stat;
-            if ( typeName == null || ! dicoStats.TryGetValue(typeName, out stat))
+            if (!(rowObject is string typeName) || !dicoStats.TryGetValue(typeName, out ClrTypeStats stat))
             {
                 return null;
             }
             long n = stat.NbInstances;
 
-            if ( dicoPrevStats != null )
+            if (dicoPrevStats != null)
             {
-                ClrTypeStats prevStat;
-                if( dicoPrevStats.TryGetValue(typeName, out prevStat) )
+                if (dicoPrevStats.TryGetValue(typeName, out ClrTypeStats prevStat))
                 {
                     n -= prevStat.NbInstances;
                 }

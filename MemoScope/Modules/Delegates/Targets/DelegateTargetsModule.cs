@@ -1,19 +1,16 @@
 ﻿using MemoScope.Core;
-using MemoScope.Core.Helpers;
 using MemoScope.Core.Data;
+using MemoScope.Core.Helpers;
 using System.Collections.Generic;
 
 namespace MemoScope.Modules.Delegates.Targets
 {
     public partial class DelegateTargetsModule : UIClrDumpModule
     {
-        List<DelegateTargetInformation> delegateTargetInformations;
-        ClrDumpObject clrDumpObject;
+        private List<DelegateTargetInformation> delegateTargetInformations;
+        private ClrDumpObject clrDumpObject;
 
-        public DelegateTargetsModule()
-        {
-            InitializeComponent();
-        }
+        public DelegateTargetsModule() => InitializeComponent();
 
         public void Setup(ClrDumpObject clrDumpObject)
         {
@@ -27,10 +24,7 @@ namespace MemoScope.Modules.Delegates.Targets
             dlvDelegateTargets.SetUpTypeColumn<DelegateTargetInformation>(this);
         }
 
-        public override void Init()
-        {
-            delegateTargetInformations = DelegatesAnalysis.GetDelegateTargetInformations(clrDumpObject);
-        }
+        public override void Init() => delegateTargetInformations = DelegatesAnalysis.GetDelegateTargetInformations(clrDumpObject);
 
         public override void PostInit()
         {

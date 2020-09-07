@@ -9,10 +9,7 @@ namespace MemoScope.Modules.RootPath
     {
         private List<RootPathInformation> RootPath { get; set; }
         private ClrDumpObject ClrDumpObject { get; set; }
-        public RootPathModule()
-        {
-            InitializeComponent();
-        }
+        public RootPathModule() => InitializeComponent();
 
         public override void Init()
         {
@@ -34,7 +31,7 @@ namespace MemoScope.Modules.RootPath
         public override void PostInit()
         {
             dlvRootPath.Objects = RootPath;
-            Summary = $"";
+            Summary = "";
         }
     }
 }

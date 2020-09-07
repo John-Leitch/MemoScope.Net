@@ -1,6 +1,6 @@
-﻿using System;
+﻿using MemoScopeApi;
+using System;
 using System.ServiceModel;
-using MemoScopeApi;
 
 namespace MemoScope.Modules.Process
 {
@@ -11,18 +11,12 @@ namespace MemoScope.Modules.Process
 
         public event Action<int> DumpRequested;
 
-        static MemoScopeService()
-        {
-            Instance = new MemoScopeService();
-        }
+        static MemoScopeService() => Instance = new MemoScopeService();
 
         private MemoScopeService()
         {
-            
+
         }
-        public void DumpMe(int processId)
-        {
-            DumpRequested?.Invoke(processId);
-        }
+        public void DumpMe(int processId) => DumpRequested?.Invoke(processId);
     }
 }

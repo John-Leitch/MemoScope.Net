@@ -6,7 +6,7 @@ namespace MemoScope.Modules.BlockingObjects
 {
     internal class ThreadColumn : OLVColumn
     {
-        private ThreadProperty thread;
+        private readonly ThreadProperty thread;
 
         public ThreadColumn(ThreadProperty thread)
         {
@@ -18,22 +18,10 @@ namespace MemoScope.Modules.BlockingObjects
             TextAlign = HorizontalAlignment.Center;
         }
 
-        private object GetData(object rowObject)
-        {
-            var blockingObjectInfo = rowObject as BlockingObjectInformation;
-            if( blockingObjectInfo == null)
-            {
-                return null;
-            }
-            if (blockingObjectInfo.OwnersId.Contains(thread.ManagedId))
-            {
-                return Properties.Resources._lock_small;
-            }
-            if (blockingObjectInfo.WaitersId.Contains(thread.ManagedId))
-            {
-                return Properties.Resources.hourglass;
-            }
-            return null;
-        }
+        private object GetData(object rowObject) => !(rowObject is BlockingObjectInformation blockingObjectInfo)
+                ? null
+                : (object)(blockingObjectInfo.OwnersId.Contains(thread.ManagedId)
+                ? Properties.Resources._lock_small
+                : blockingObjectInfo.WaitersId.Contains(thread.ManagedId) ? Properties.Resources.hourglass : null);
     }
 }

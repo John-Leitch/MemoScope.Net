@@ -23,9 +23,9 @@ namespace MemoDummy
         {
             objects = new List<object>();
 
-            for(int i=0; i< Count; i++)
+            for (int i = 0; i < Count; i++)
             {
-                if(stopRequested)
+                if (stopRequested)
                 {
                     break;
                 }

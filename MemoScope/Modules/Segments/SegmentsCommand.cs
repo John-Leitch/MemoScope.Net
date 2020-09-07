@@ -11,9 +11,6 @@ namespace MemoScope.Modules.Segments
 
         }
 
-        protected override void HandleData(ClrDump clrDump)
-        {
-            UIModuleFactory.CreateModule<SegmentsModule>(module => { module.UIModuleParent = selectedModule; module.Setup(clrDump); }, module => DockModule(module));
-        }
+        protected override void HandleData(ClrDump clrDump) => UIModuleFactory.CreateModule<SegmentsModule>(module => { module.UIModuleParent = selectedModule; module.Setup(clrDump); }, module => DockModule(module));
     }
 }

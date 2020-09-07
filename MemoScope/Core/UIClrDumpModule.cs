@@ -1,23 +1,20 @@
-﻿using System.Linq;
-using BrightIdeasSoftware;
+﻿using BrightIdeasSoftware;
+using System.Collections.Generic;
+using System.Linq;
 using WinFwk.UICommands;
 using WinFwk.UIModules;
-using WinFwk.UITools.Commands;
-using System.Collections.Generic;
 using WinFwk.UITools;
+using WinFwk.UITools.Commands;
 
 namespace MemoScope.Core
 {
-    public partial class UIClrDumpModule : UIModule, 
+    public partial class UIClrDumpModule : UIModule,
         UIDataProvider<ClrDump>,
         IDataExportable
     {
-        public  ClrDump ClrDump { get; protected set; }
+        public ClrDump ClrDump { get; protected set; }
 
-        public UIClrDumpModule()
-        {
-            InitializeComponent();
-        }
+        public UIClrDumpModule() => InitializeComponent();
 
         ClrDump UIDataProvider<ClrDump>.Data => ClrDump;
 

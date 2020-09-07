@@ -14,7 +14,7 @@ namespace MemoDummy
 
         public override void Run()
         {
-            for(int i=0; i < N; i++)
+            for (int i = 0; i < N; i++)
             {
                 MyDisposableType obj = new MyDisposableType();
             }
@@ -25,12 +25,9 @@ namespace MemoDummy
 
     public class MyDisposableType : IDisposable
     {
-        IntPtr hglobal = Marshal.AllocHGlobal(100000);
+        readonly IntPtr hglobal = Marshal.AllocHGlobal(100000);
 
 
-        public void Dispose()
-        {
-            Marshal.FreeHGlobal(hglobal);
-        }
+        public void Dispose() => Marshal.FreeHGlobal(hglobal);
     }
 }

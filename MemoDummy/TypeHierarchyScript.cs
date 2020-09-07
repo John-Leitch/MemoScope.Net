@@ -9,12 +9,11 @@ namespace MemoDummy
 
         private List<object> objects;
 
-        public override void Run()
-        {
-            objects = new List<object>();
-            objects.Add(new FirstTestClass());
-            objects.Add(new SecondTestClass());
-        }
+        public override void Run() => objects = new List<object>
+            {
+                new FirstTestClass(),
+                new SecondTestClass()
+            };
     }
 
     public abstract class MyAbstractClass
@@ -33,7 +32,7 @@ namespace MemoDummy
     public class SecondTestClass : FirstTestClass, AnotherInterface
     {
         public string Description { get; protected set; }
-        public void DoSomething()
+        public static void DoSomething()
         {
         }
     }

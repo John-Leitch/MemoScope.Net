@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Runtime.InteropServices;
 using System.Threading;
 
 namespace MemoDummy
@@ -15,12 +14,14 @@ namespace MemoDummy
 
         public override void Run()
         {
-            for(int i=0; i < N; i++)
+            for (int i = 0; i < N; i++)
             {
-                Thread t = new Thread(() => DoSomething(i));
-                t.Name = $"Thread #{i}";
+                Thread t = new Thread(() => DoSomething(i))
+                {
+                    Name = $"Thread #{i}"
+                };
                 t.Start();
-                switch(i%8)
+                switch (i % 8)
                 {
                     case 0:
                         t.Abort();
@@ -52,14 +53,14 @@ namespace MemoDummy
 
         private void DoSomething(int n)
         {
-            while(true)
+            while (true)
             {
                 try { Thread.Sleep(100); } catch { }
                 long j = 0;
                 for (int i = 0; i < 1000; i++)
                 {
                     j = Syracuse(j);
-                    if( j < 0)
+                    if (j < 0)
                     {
                         throw new Exception();
                     }
@@ -67,13 +68,6 @@ namespace MemoDummy
             }
         }
 
-        private long Syracuse(long j)
-        {
-            if( j % 2 == 0)
-            {
-                return j / 2;
-            }
-            return 3 * j + 1;
-        }
+        private static long Syracuse(long j) => j % 2 == 0 ? j / 2 : 3 * j + 1;
     }
 }

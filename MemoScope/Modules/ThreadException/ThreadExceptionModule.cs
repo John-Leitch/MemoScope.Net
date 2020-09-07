@@ -1,8 +1,8 @@
 ﻿using MemoScope.Core;
+using MemoScope.Core.Helpers;
 using MemoScope.Modules.StackTrace;
 using Microsoft.Diagnostics.Runtime;
 using System.Collections.Generic;
-using MemoScope.Core.Helpers;
 
 namespace MemoScope.Modules.ThreadException
 {
@@ -37,8 +37,8 @@ namespace MemoScope.Modules.ThreadException
         public override void Init()
         {
             Exceptions = new List<ClrExceptionInformation>();
-            ClrException exception =  ClrDump.Eval(() => ClrThread.CurrentException);
-            while(exception != null)
+            ClrException exception = ClrDump.Eval(() => ClrThread.CurrentException);
+            while (exception != null)
             {
                 Exceptions.Add(new ClrExceptionInformation(ClrDump, exception));
                 exception = ClrDump.Eval(() => exception.Inner);
@@ -50,7 +50,7 @@ namespace MemoScope.Modules.ThreadException
         private void dlvExceptions_SelectedIndexChanged(object sender, System.EventArgs e)
         {
             var exception = dlvExceptions.SelectedObject<ClrExceptionInformation>();
-            if( exception != null)
+            if (exception != null)
             {
                 Init(exception);
             }

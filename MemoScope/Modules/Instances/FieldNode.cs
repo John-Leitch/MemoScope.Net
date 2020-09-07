@@ -23,10 +23,7 @@ namespace MemoScope.Modules.Instances
             this.ClrType = clrType;
             CanExpand = ClrDump.Eval(() => ClrDump.HasField(clrType));
         }
-        public FieldNode(string fieldName, ClrType clrType, ClrDump clrDump, FieldNode parent) : this(fieldName, clrType, clrDump)
-        {
-            Parent = parent;
-        }
+        public FieldNode(string fieldName, ClrType clrType, ClrDump clrDump, FieldNode parent) : this(fieldName, clrType, clrDump) => Parent = parent;
 
         [OLVColumn(Title = "Name", Width = 150)]
         public string Name => TypeHelpers.RealName(FieldName);

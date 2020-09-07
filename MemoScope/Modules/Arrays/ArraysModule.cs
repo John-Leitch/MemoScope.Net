@@ -1,10 +1,10 @@
-﻿using MemoScope.Core;
+﻿using BrightIdeasSoftware;
+using MemoScope.Core;
+using MemoScope.Core.Helpers;
+using MemoScope.Modules.ArrayInstances;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using WinFwk.UICommands;
-using MemoScope.Core.Helpers;
-using BrightIdeasSoftware;
-using MemoScope.Modules.ArrayInstances;
 
 namespace MemoScope.Modules.Arrays
 {
@@ -12,10 +12,7 @@ namespace MemoScope.Modules.Arrays
     {
         private List<ArraysInformation> Arrays { get; set; }
 
-        public ArraysModule()
-        {
-            InitializeComponent();
-        }
+        public ArraysModule() => InitializeComponent();
 
         public void Setup(ClrDump clrDump)
         {
@@ -32,7 +29,7 @@ namespace MemoScope.Modules.Arrays
 
         private void OnCellClick(object sender, CellClickEventArgs e)
         {
-            if( e.ClickCount == 2 && e.Model != null)
+            if (e.ClickCount == 2 && e.Model != null)
             {
                 ArrayInstancesCommand.Display(Data, this);
             }
@@ -57,11 +54,7 @@ namespace MemoScope.Modules.Arrays
             get
             {
                 var arraysInfo = dlvArrays.SelectedObject<ArraysInformation>();
-                if(arraysInfo ==null)
-                {
-                    return null;
-                }
-                return new ArraysAddressList(arraysInfo.ClrDumpType);
+                return arraysInfo == null ? null : new ArraysAddressList(arraysInfo.ClrDumpType);
             }
         }
     }

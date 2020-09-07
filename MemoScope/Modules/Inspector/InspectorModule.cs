@@ -9,7 +9,7 @@ namespace MemoScope.Modules.Inspector
     {
         public void HandleMessage(SelectedClrDumpObjectMessage message)
         {
-            if(message.SelectedInstance.ClrDump.Id != ClrDump.Id)
+            if (message.SelectedInstance.ClrDump.Id != ClrDump.Id)
             {
                 return;
             }

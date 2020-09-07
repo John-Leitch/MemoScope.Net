@@ -8,13 +8,10 @@ namespace MemoScope.Modules.Explorer
 {
     public class ExplorerCommand : AbstractVoidUICommand
     {
-        public ExplorerCommand() : base("Explorer", "Display explorer", UIToolBarSettings.Main.Name, Properties.Resources.folders_explorer, Keys.Control|Keys.Shift|Keys.E)
+        public ExplorerCommand() : base("Explorer", "Display explorer", UIToolBarSettings.Main.Name, Properties.Resources.folders_explorer, Keys.Control | Keys.Shift | Keys.E)
         {
         }
 
-        public override void Run()
-        {
-            UIModuleFactory.CreateModule<ExplorerModule>(module => { }, module => DockModule(module, DockState.DockLeft));
-        }
+        public override void Run() => UIModuleFactory.CreateModule<ExplorerModule>(module => { }, module => DockModule(module, DockState.DockLeft));
     }
 }

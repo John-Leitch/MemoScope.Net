@@ -1,6 +1,6 @@
-﻿using System.Threading;
-using MemoScope.Core;
+﻿using MemoScope.Core;
 using NUnit.Framework;
+using System.Threading;
 
 namespace UnitTestProject
 {

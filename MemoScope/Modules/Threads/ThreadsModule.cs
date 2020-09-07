@@ -1,11 +1,11 @@
-﻿using MemoScope.Core;
+﻿using BrightIdeasSoftware;
+using MemoScope.Core;
+using MemoScope.Core.Data;
 using MemoScope.Core.Helpers;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using WinFwk.UICommands;
-using MemoScope.Core.Data;
-using BrightIdeasSoftware;
-using System.Drawing;
 
 namespace MemoScope.Modules.Threads
 {
@@ -13,10 +13,7 @@ namespace MemoScope.Modules.Threads
     {
         private List<ThreadInformation> Threads;
 
-        public ThreadsModule()
-        {
-            InitializeComponent();
-        }
+        public ThreadsModule() => InitializeComponent();
 
         public void Setup(ClrDump clrDump)
         {
@@ -45,8 +42,7 @@ namespace MemoScope.Modules.Threads
 
             dlvThreads.FormatCell += (o, e) =>
             {
-                var threadInfo = e.Model as ThreadInformation;
-                if (threadInfo == null)
+                if (!(e.Model is ThreadInformation threadInfo))
                 {
                     return;
                 }
@@ -73,8 +69,7 @@ namespace MemoScope.Modules.Threads
             Threads = ClrDump.Threads.Select(thread =>
             {
                 var threadInfo = new ThreadInformation(ClrDump, thread);
-                ThreadProperty threadProp;
-                if (ClrDump.ThreadProperties.TryGetValue(thread.ManagedThreadId, out threadProp))
+                if (ClrDump.ThreadProperties.TryGetValue(thread.ManagedThreadId, out ThreadProperty threadProp))
                 {
                     threadInfo.Address = threadProp.Address;
                     threadInfo.Name = threadProp.Name;
@@ -88,11 +83,7 @@ namespace MemoScope.Modules.Threads
             get
             {
                 var thread = dlvThreads.SelectedObject<ThreadInformation>();
-                if (thread == null)
-                {
-                    return null;
-                }
-                return new ClrDumpThread(thread.ClrDump, thread.Thread, thread.Name);
+                return thread == null ? null : new ClrDumpThread(thread.ClrDump, thread.Thread, thread.Name);
             }
         }
 
@@ -103,8 +94,10 @@ namespace MemoScope.Modules.Threads
             dlvThreads.Objects = Threads;
         }
 
-        public override IEnumerable<ObjectListView> ListViews {
-            get {
+        public override IEnumerable<ObjectListView> ListViews
+        {
+            get
+            {
                 yield return dlvThreads;
                 foreach (var lv in stackModule.ListViews)
                 {

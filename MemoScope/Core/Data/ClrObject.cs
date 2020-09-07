@@ -1,12 +1,12 @@
-﻿using System;
-using Microsoft.Diagnostics.Runtime;
+﻿using Microsoft.Diagnostics.Runtime;
+using System;
 
 namespace MemoScope.Core.Data
 {
     // This code was extracted from https://github.com/JeffCyr/ClrMD.Extensions
     // Thanks a lot to Jeff Cyr !
     // TODO: remove this code when ClrMd merges 'clrobject' branches into master and releases a new version.
-    public struct ClrObject 
+    public struct ClrObject
     {
         public ulong Address { get; }
         public ClrType Type { get; }
@@ -21,16 +21,13 @@ namespace MemoScope.Core.Data
             {
                 ClrInstanceField field = GetField(fieldName);
 
-                if (field == null)
-                    throw new ArgumentException($"Field '{fieldName}' not found in Type '{Type.Name}'");
-
-                return this[field];
+                return field == null ? throw new ArgumentException($"Field '{fieldName}' not found in Type '{Type.Name}'") : this[field];
             }
         }
 
         public ClrObject this[ClrInstanceField field] => GetInnerObject(field.GetAddress(Address, IsInterior), field.Type);
         public ClrObject this[int arrayIndex] => GetInnerObject(Type.GetArrayElementAddress(Address, arrayIndex), Type.ComponentType);
-        public bool HasSimpleValue => SimpleValueHelper.IsSimpleValue(Type); 
+        public bool HasSimpleValue => SimpleValueHelper.IsSimpleValue(Type);
         public object SimpleValue => SimpleValueHelper.GetSimpleValue(this);
 
         public ClrObject(ulong address, ClrType type, bool isInterior = false)
@@ -54,10 +51,7 @@ namespace MemoScope.Core.Data
             return field;
         }
 
-        public static string GetAutomaticPropertyField(string propertyName)
-        {
-            return "<" + propertyName + ">" + "k__BackingField";
-        }
+        public static string GetAutomaticPropertyField(string propertyName) => "<" + propertyName + ">" + "k__BackingField";
 
         public static ClrObject GetInnerObject(ulong pointer, ClrType type)
         {
@@ -78,30 +72,16 @@ namespace MemoScope.Core.Data
                 // ClrMD should be updated in a future version to include ClrType.GetValue(int interior).
                 fieldAddress = pointer - (ulong)type.Heap.PointerSize;
             }
-            else if (type.IsValueClass)
-            {
-                fieldAddress = pointer;
-            }
             else
             {
-                throw new NotSupportedException(string.Format("Object type not supported '{0}'", type.Name));
+                fieldAddress = type.IsValueClass ? pointer : throw new NotSupportedException(string.Format("Object type not supported '{0}'", type.Name));
             }
 
             return new ClrObject(fieldAddress, actualType, !type.IsObjectReference);
         }
 
-        public override int GetHashCode()
-        {
-            return Address.GetHashCode();
-        }
+        public override int GetHashCode() => Address.GetHashCode();
 
-        public override bool Equals(object o)
-        {
-            if( o is ClrObject)
-            {
-                return Address == ((ClrObject)o).Address;
-            }
-            return false;
-        }
+        public override bool Equals(object o) => o is ClrObject @object ? Address == @object.Address : false;
     }
 }

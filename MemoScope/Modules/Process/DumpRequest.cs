@@ -4,11 +4,8 @@ namespace MemoScope.Modules.Process
 {
     public class DumpRequest : AbstractUIMessage
     {
-        public ProcessWrapper ProcessWrapper { get; private set; }
+        public ProcessWrapper ProcessWrapper { get; }
 
-        public DumpRequest(ProcessWrapper processWrapper)
-        {
-            ProcessWrapper = processWrapper;
-        }
+        public DumpRequest(ProcessWrapper processWrapper) => ProcessWrapper = processWrapper;
     }
 }

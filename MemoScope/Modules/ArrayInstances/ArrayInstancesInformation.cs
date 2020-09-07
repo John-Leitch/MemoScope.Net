@@ -1,7 +1,7 @@
-﻿using MemoScope.Core;
+﻿using BrightIdeasSoftware;
+using MemoScope.Core;
 using MemoScope.Core.Data;
 using Microsoft.Diagnostics.Runtime;
-using BrightIdeasSoftware;
 using WinFwk.UITools;
 
 namespace MemoScope.Modules.ArrayInstances

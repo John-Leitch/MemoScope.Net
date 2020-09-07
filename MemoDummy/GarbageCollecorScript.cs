@@ -13,28 +13,28 @@ namespace MemoDummy
         public long GCCallPeriodInMs { get; set; } = 100;
 
         [Category("Info")]
-        public int GCCount0 => GC.CollectionCount(0);
+        public static int GCCount0 => GC.CollectionCount(0);
 
         [Category("Info")]
-        public int GCCount1 => GC.CollectionCount(1);
+        public static int GCCount1 => GC.CollectionCount(1);
 
         [Category("Info")]
-        public int GCCount2 => GC.CollectionCount(2);
+        public static int GCCount2 => GC.CollectionCount(2);
 
         [Category("Info")]
         public long NbObjects => nbObjects;
 
         const int N = 1024;
 
-        private object[] objects = new object[N];
+        private readonly object[] objects = new object[N];
         Timer timer;
-        long nbObjects=0;
+        long nbObjects = 0;
         public override void Run()
         {
             timer = new Timer(RunGC);
             timer.Change(TimeSpan.Zero, TimeSpan.FromMilliseconds(GCCallPeriodInMs));
             Random r = new Random();
-            while(! stopRequested)
+            while (!stopRequested)
             {
                 int idx = r.Next(N);
                 nbObjects++;
@@ -44,9 +44,6 @@ namespace MemoDummy
         }
 
 
-        private void RunGC(object state)
-        {
-            GC.Collect();
-        }
+        private void RunGC(object state) => GC.Collect();
     }
 }

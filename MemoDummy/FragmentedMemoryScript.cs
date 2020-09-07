@@ -9,10 +9,10 @@ namespace MemoDummy
         public override string Name => "Fragmented Memory";
         public override string Description => "Creates some large objects and destroy them until out of memory happens because of memory fragmentation";
 
-        private List<double[]> buffers = new List<double[]>();
-        public string PrivateMemory => $"{Process.GetCurrentProcess().PrivateMemorySize64:###,###,###,##0}";
-        public string WorkingSet => $"{Process.GetCurrentProcess().WorkingSet64:###,###,###,##0}";
-        
+        private readonly List<double[]> buffers = new List<double[]>();
+        public static string PrivateMemory => $"{Process.GetCurrentProcess().PrivateMemorySize64:###,###,###,##0}";
+        public static string WorkingSet => $"{Process.GetCurrentProcess().WorkingSet64:###,###,###,##0}";
+
         public override void Run()
         {
             const long M = 1000 * 1000;

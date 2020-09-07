@@ -8,8 +8,8 @@ namespace MemoScope.Modules.StackTrace
 {
     public class StackFrameInformation
     {
-        private ClrDump clrDump;
-        private ClrStackFrame frame;
+        private readonly ClrDump clrDump;
+        private readonly ClrStackFrame frame;
 #if LINE_AND_FILE
         private FileAndLineNumber? fileAndLineNumber;
 #endif
@@ -21,7 +21,7 @@ namespace MemoScope.Modules.StackTrace
             DisplayString = frame.DisplayString;
             Kind = frame.Kind;
             Method = frame.Method;
-            
+
 #if LINE_AND_FILE
             if (frame.Kind != ClrStackFrameType.Runtime)
             {
@@ -30,18 +30,15 @@ namespace MemoScope.Modules.StackTrace
 #endif
         }
 
-        public StackFrameInformation(ClrDump clrDump, ClrThread thread)
-        {
-            this.clrDump = clrDump;
-        }
+        public StackFrameInformation(ClrDump clrDump, ClrThread thread) => this.clrDump = clrDump;
 
         [OLVColumn]
-        public string MethodName => Method != null ? Method.Name : "[*] "+DisplayString;
+        public string MethodName => Method != null ? Method.Name : "[*] " + DisplayString;
 
         [OLVColumn]
-        public ClrStackFrameType Kind { get; private set; }
+        public ClrStackFrameType Kind { get; }
 
-        [OLVColumn(Width=450)]
+        [OLVColumn(Width = 450)]
         public string DisplayString { get; }
 
         [AddressColumn]
@@ -54,6 +51,6 @@ namespace MemoScope.Modules.StackTrace
         [OLVColumn]
         public string File => fileAndLineNumber?.File;
 #endif
-        public ClrMethod Method { get; private set; }
+        public ClrMethod Method { get; }
     }
 }

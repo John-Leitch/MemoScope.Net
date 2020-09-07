@@ -7,16 +7,16 @@ using WinFwk.UIModules;
 
 namespace MemoScope.Modules.Inspector
 {
-    public class InspectorCommand :  AbstractDataUICommand<ClrDump>
+    public class InspectorCommand : AbstractDataUICommand<ClrDump>
     {
-        public InspectorCommand() : base("Inspector", "Display Inspector module", "Dump", Properties.Resources.microscope, Keys.Control|Keys.Shift|Keys.I)
+        public InspectorCommand() : base("Inspector", "Display Inspector module", "Dump", Properties.Resources.microscope, Keys.Control | Keys.Shift | Keys.I)
         {
 
         }
 
         protected override void HandleData(ClrDump data)
         {
-            if( data == null)
+            if (data == null)
             {
                 throw new InvalidOperationException("Can't show inspector module, no dump selected !");
             }

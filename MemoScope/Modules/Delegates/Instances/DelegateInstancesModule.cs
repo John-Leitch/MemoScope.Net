@@ -1,21 +1,18 @@
 ﻿using MemoScope.Core;
-using MemoScope.Core.Helpers;
 using MemoScope.Core.Data;
+using MemoScope.Core.Helpers;
+using MemoScope.Modules.Delegates.Targets;
 using System.Collections.Generic;
 using WinFwk.UICommands;
-using MemoScope.Modules.Delegates.Targets;
 
 namespace MemoScope.Modules.Delegates.Instances
 {
     public partial class DelegateInstancesModule : UIClrDumpModule, UIDataProvider<ClrDumpObject>
     {
-        List<DelegateInstanceInformation> delegateInstanceInformations;
-        ClrDumpType clrDumpType;
+        private List<DelegateInstanceInformation> delegateInstanceInformations;
+        private ClrDumpType clrDumpType;
 
-        public DelegateInstancesModule()
-        {
-            InitializeComponent();
-        }
+        public DelegateInstancesModule() => InitializeComponent();
 
         public void Setup(ClrDumpType clrDumpType)
         {
@@ -29,10 +26,7 @@ namespace MemoScope.Modules.Delegates.Instances
             dlvDelegateInstances.SetUpTypeColumn<DelegateInstanceInformation>(this);
         }
 
-        public override void Init()
-        {
-            delegateInstanceInformations = DelegatesAnalysis.GetDelegateInstanceInformation(clrDumpType);
-        }
+        public override void Init() => delegateInstanceInformations = DelegatesAnalysis.GetDelegateInstanceInformation(clrDumpType);
 
         public override void PostInit()
         {
@@ -55,7 +49,7 @@ namespace MemoScope.Modules.Delegates.Instances
             {
                 return;
             }
-            if (e.Column == dlvDelegateInstances[nameof(DelegateInstanceInformation.Address)] )
+            if (e.Column == dlvDelegateInstances[nameof(DelegateInstanceInformation.Address)])
             {
                 return;
             }

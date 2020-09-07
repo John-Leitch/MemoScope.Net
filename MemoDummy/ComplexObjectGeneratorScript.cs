@@ -27,7 +27,7 @@ namespace MemoDummy
         {
             objects = new List<ComplexObject>();
 
-            while (objects.Count < MaxObject && ! stopRequested)
+            while (objects.Count < MaxObject && !stopRequested)
             {
                 for (int i = 0; i < BatchSize; i++)
                 {

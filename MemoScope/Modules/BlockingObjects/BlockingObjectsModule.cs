@@ -11,10 +11,7 @@ namespace MemoScope.Modules.BlockingObjects
         private List<BlockingObjectInformation> BlockingObjects { get; set; }
         private List<ThreadProperty> Threads { get; set; }
 
-        public BlockingObjectsModule()
-        {
-            InitializeComponent();
-        }
+        public BlockingObjectsModule() => InitializeComponent();
 
         public void Setup(ClrDump clrDump)
         {
@@ -31,7 +28,7 @@ namespace MemoScope.Modules.BlockingObjects
         {
             base.Init();
             var objs = ClrDump.GetBlockingObjects();
-            BlockingObjects = objs.Select( blockingObject => new BlockingObjectInformation(ClrDump, blockingObject)).ToList();
+            BlockingObjects = objs.Select(blockingObject => new BlockingObjectInformation(ClrDump, blockingObject)).ToList();
             Threads = ClrDump.ThreadProperties.Values.ToList();
         }
 
@@ -45,7 +42,7 @@ namespace MemoScope.Modules.BlockingObjects
             dlvBlockingObjects.RebuildColumns();
             Summary = $"{BlockingObjects.Count} objects, {Threads.Count} threads";
             dlvBlockingObjects.Objects = BlockingObjects;
-            dlvBlockingObjects.BuildGroups(nameof(BlockingObjectInformation.Taken), SortOrder.Descending) ;
+            dlvBlockingObjects.BuildGroups(nameof(BlockingObjectInformation.Taken), SortOrder.Descending);
             dlvBlockingObjects.ShowGroups = true;
         }
     }

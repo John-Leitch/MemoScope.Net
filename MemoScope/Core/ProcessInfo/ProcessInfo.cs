@@ -27,25 +27,17 @@ namespace MemoScope.Core.ProcessInfo
         [XmlIgnore]
         public TimeSpan TotalProcessorTime { get; set; }
         [Browsable(false)]
-        public string TotalProcessorTimeStr {
-            get
-            {
-                return TotalProcessorTime.ToString();
-            }
-            set
-            {
-                TotalProcessorTime = TimeSpan.Parse(value);
-            }
+        public string TotalProcessorTimeStr
+        {
+            get => TotalProcessorTime.ToString();
+            set => TotalProcessorTime = TimeSpan.Parse(value);
         }
         [XmlIgnore]
         public DateTime StartTime { get; set; }
         [Browsable(false)]
         public string StartTimeStr
         {
-            get
-            {
-                return StartTime.ToString("yyyy/MM/dd HH:mm:ss");
-            }
+            get => StartTime.ToString("yyyy/MM/dd HH:mm:ss");
             set
             {
                 if (value != null)
@@ -59,10 +51,7 @@ namespace MemoScope.Core.ProcessInfo
         [Browsable(false)]
         public string DumpTimeStr
         {
-            get
-            {
-                return DumpTime.ToString("yyyy/MM/dd HH:mm:ss");
-            }
+            get => DumpTime.ToString("yyyy/MM/dd HH:mm:ss");
             set
             {
                 if (value != null)
@@ -76,14 +65,8 @@ namespace MemoScope.Core.ProcessInfo
         [Browsable(false)]
         public string UserProcessorTimeStr
         {
-            get
-            {
-                return UserProcessorTime.ToString();
-            }
-            set
-            {
-                UserProcessorTime = TimeSpan.Parse(value);
-            }
+            get => UserProcessorTime.ToString();
+            set => UserProcessorTime = TimeSpan.Parse(value);
         }
 
         public ProcessInfo()

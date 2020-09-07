@@ -13,7 +13,7 @@ namespace MemoScope.Modules.Bookmarks
 
             Log($"Bookmark: {message.Action}, {address:X}#{clrDump.Id}");
 
-            switch(message.Action)
+            switch (message.Action)
             {
                 case BookmarkAction.Add:
                     clrDump.ClrDumpInfo.AddBookmark(address, clrDumpObject.ClrType);

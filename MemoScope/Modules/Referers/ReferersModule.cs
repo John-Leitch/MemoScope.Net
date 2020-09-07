@@ -1,10 +1,9 @@
-﻿using System;
-using MemoScope.Core;
+﻿using MemoScope.Core;
 using MemoScope.Core.Data;
 using MemoScope.Core.Helpers;
-using WinFwk.UICommands;
 using System.Linq;
 using System.Windows.Forms;
+using WinFwk.UICommands;
 
 namespace MemoScope.Modules.Referers
 {
@@ -12,10 +11,7 @@ namespace MemoScope.Modules.Referers
     {
         private ReferersInformation Referers { get; set; }
 
-        public ReferersModule()
-        {
-            InitializeComponent();
-        }
+        public ReferersModule() => InitializeComponent();
 
         public override void Init()
         {
@@ -30,7 +26,7 @@ namespace MemoScope.Modules.Referers
             ClrDump = addressList.ClrDump;
             Icon = Properties.Resources.chart_organisation_small;
             Referers = new ReferersInformation(ClrDump, addressList.ClrType, MessageBus, addressList.Addresses);
-            
+
             Name = $"#{ClrDump.Id} - Referers - {Referers.TypeName}";
         }
 
@@ -46,23 +42,13 @@ namespace MemoScope.Modules.Referers
             get
             {
                 var refInfo = dtlvDistribution.SelectedObject<ReferersInformation>();
-                if(refInfo == null)
-                {
-                    return null;
-                }
-                var addressList = new AddressList(ClrDump, refInfo.ClrType, refInfo.Instances.ToList());
-                return addressList;
+                return refInfo == null ? null : new AddressList(ClrDump, refInfo.ClrType, refInfo.Instances.ToList());
             }
         }
         public AddressList GetReferences()
         {
             var refInfo = dtlvDistribution.SelectedObject<ReferersInformation>();
-            if (refInfo == null)
-            {
-                return null;
-            }
-            var addressList = new AddressList(ClrDump, Referers.ClrType, refInfo.References.ToList());
-            return addressList;
+            return refInfo == null ? null : new AddressList(ClrDump, Referers.ClrType, refInfo.References.ToList());
         }
     }
 }

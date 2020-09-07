@@ -6,12 +6,9 @@ namespace MemoScope.Modules.Segments
 {
     public class SegmentInformation
     {
-        private ClrSegment segment;
+        private readonly ClrSegment segment;
 
-        public SegmentInformation(ClrSegment segment)
-        {
-            this.segment = segment;
-        }
+        public SegmentInformation(ClrSegment segment) => this.segment = segment;
 
         [AddressColumn]
         public ulong Start => segment.Start;
@@ -25,7 +22,7 @@ namespace MemoScope.Modules.Segments
         public ulong Gen0Length => segment.Gen0Length;
         [IntColumn(Title = "Gen 1 Length")]
         public ulong Gen1Length => segment.Gen1Length;
-        [IntColumn(Title="Gen 2 Length")]
+        [IntColumn(Title = "Gen 2 Length")]
         public ulong Gen2Length => segment.Gen2Length;
         [BoolColumn]
         public bool IsEphemeral => segment.IsEphemeral;

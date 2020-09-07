@@ -4,8 +4,8 @@ namespace MemoScope.Core.Data
 {
     public class ArrayElementsAddressContainer : IAddressContainer
     {
-        ClrDumpObject clrDumpObject;
-        private ClrObject clrObject;
+        private readonly ClrDumpObject clrDumpObject;
+        private readonly ClrObject clrObject;
         public ArrayElementsAddressContainer(ClrDumpObject clrDumpObject)
         {
             this.clrDumpObject = clrDumpObject;

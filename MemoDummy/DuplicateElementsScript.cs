@@ -23,9 +23,9 @@ namespace MemoDummy
         {
             objects = new List<object>();
 
-            for(int i=0; i< Count; i++)
+            for (int i = 0; i < Count; i++)
             {
-                if(stopRequested)
+                if (stopRequested)
                 {
                     break;
                 }
@@ -35,7 +35,7 @@ namespace MemoDummy
 
                 for (int j = 0; j < Size; j++)
                 {
-                    stringArray[j] = $"#{i}_{j%DuplicatePeriod}";
+                    stringArray[j] = $"#{i}_{j % DuplicatePeriod}";
                 }
             }
         }

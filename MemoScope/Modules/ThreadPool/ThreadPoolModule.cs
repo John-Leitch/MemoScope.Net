@@ -1,6 +1,6 @@
-﻿using System;
-using MemoScope.Core;
+﻿using MemoScope.Core;
 using MemoScope.Core.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -13,10 +13,7 @@ namespace MemoScope.Modules.ThreadPool
         public List<NativeWorkItemInformation> NativeWorkItems { get; private set; }
         public List<ManagedWorkItemInformation> ManagedWorkItems { get; private set; }
 
-        public ThreadPoolModule()
-        {
-            InitializeComponent();
-        }
+        public ThreadPoolModule() => InitializeComponent();
 
         public void Setup(ClrDump clrDump)
         {
@@ -52,7 +49,7 @@ namespace MemoScope.Modules.ThreadPool
             pgThreadPool.SelectedObject = ThreadPoolInformation;
             dlvNativeWorkItem.Objects = NativeWorkItems;
             dlvManagedWorkItem.Objects = ManagedWorkItems;
-            Summary = $"ThreadPool";
+            Summary = "ThreadPool";
         }
     }
 }

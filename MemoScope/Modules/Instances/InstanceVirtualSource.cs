@@ -11,9 +11,9 @@ namespace MemoScope.Modules.Instances
     // we don't need to update anything so we don't need a cache
     public class InstanceVirtualSource : AbstractVirtualListDataSource
     {
-        AddressList addressList;
-        private HashSet<ulong> filteredAddresses;
-        ulong[] filtered;
+        private readonly AddressList addressList;
+        private readonly HashSet<ulong> filteredAddresses;
+        private ulong[] filtered;
 
         public InstanceVirtualSource(VirtualObjectListView listView, AddressList addressList, HashSet<ulong> filteredAddresses) : base(listView)
         {
@@ -21,28 +21,10 @@ namespace MemoScope.Modules.Instances
             this.filteredAddresses = filteredAddresses;
         }
 
-        public override void ApplyFilters(IModelFilter modelFilter, IListFilter listFilter)
-        {
-            filtered = filteredAddresses.ToArray();
-        }
+        public override void ApplyFilters(IModelFilter modelFilter, IListFilter listFilter) => filtered = filteredAddresses.ToArray();
 
-        public override object GetNthObject(int n)
-        {
-            if (listView.UseFiltering)
-            {
-                return filtered[n];
-            }
-            var address = addressList.ClrDump.Eval(() => addressList.Addresses[n]);
-            return address;
-        }
+        public override object GetNthObject(int n) => listView.UseFiltering ? filtered[n] : (object)addressList.ClrDump.Eval(() => addressList.Addresses[n]);
 
-        public override int GetObjectCount()
-        {
-            if (listView.UseFiltering)
-            {
-                return filteredAddresses.Count;
-            }
-            return addressList.Addresses.Count;
-        }
+        public override int GetObjectCount() => listView.UseFiltering ? filteredAddresses.Count : addressList.Addresses.Count;
     }
 }

@@ -1,6 +1,6 @@
 ﻿using BrightIdeasSoftware;
-using WinFwk.UITools;
 using MemoScope.Core.Data;
+using WinFwk.UITools;
 
 namespace MemoScope.Modules.TypeDetails
 {

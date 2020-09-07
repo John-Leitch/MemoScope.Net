@@ -31,8 +31,10 @@ namespace MemoDummy
                             Thread.Sleep(100);
                         }
                     }
-                });
-                thread.Name = $"thread #{i} LOCK";
+                })
+                {
+                    Name = $"thread #{i} LOCK"
+                };
                 thread.Start();
                 Thread.Sleep(100);
                 thread = new Thread(() =>
@@ -44,8 +46,10 @@ namespace MemoDummy
                             Thread.Sleep(100);
                         }
                     }
-                });
-                thread.Name = $"thread #{i} WAIT";
+                })
+                {
+                    Name = $"thread #{i} WAIT"
+                };
                 thread.Start();
             }
         }

@@ -6,12 +6,9 @@ namespace MemoScope.Modules.Regions
 {
     public class RegionInformation
     {
-        private ClrMemoryRegion region;
+        private readonly ClrMemoryRegion region;
 
-        public RegionInformation(ClrMemoryRegion region)
-        {
-            this.region = region;
-        }
+        public RegionInformation(ClrMemoryRegion region) => this.region = region;
 
         [AddressColumn]
         public ulong Start => region.Address;

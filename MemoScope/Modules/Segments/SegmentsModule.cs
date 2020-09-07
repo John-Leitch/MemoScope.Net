@@ -10,10 +10,7 @@ namespace MemoScope.Modules.Segments
     public partial class SegmentsModule : UIClrDumpModule
     {
         private List<SegmentInformation> segments;
-        public SegmentsModule()
-        {
-            InitializeComponent();
-        }
+        public SegmentsModule() => InitializeComponent();
 
         public void Setup(ClrDump clrDump)
         {
@@ -39,7 +36,7 @@ namespace MemoScope.Modules.Segments
 
         private void dlvSegments_CellClick(object sender, BrightIdeasSoftware.CellClickEventArgs e)
         {
-            if( e.ClickCount != 2)
+            if (e.ClickCount != 2)
             {
                 return;
             }

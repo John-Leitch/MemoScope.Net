@@ -28,11 +28,11 @@ namespace MemoDummy
         {
             objects = new List<XmlSerializer>();
 
-            while (objects.Count < Max && ! stopRequested)
+            while (objects.Count < Max && !stopRequested)
             {
                 for (int i = 0; i < BatchSize; i++)
                 {
-                    objects.Add(new XmlSerializer(typeof(object), new[] { typeof(List<int>), typeof(List<double>), typeof(List<float>)  } ));
+                    objects.Add(new XmlSerializer(typeof(object), new[] { typeof(List<int>), typeof(List<double>), typeof(List<float>) }));
                 }
                 Thread.Sleep(Period);
             }

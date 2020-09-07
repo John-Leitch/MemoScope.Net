@@ -1,9 +1,9 @@
 ﻿using MemoScope.Core;
+using MemoScope.Core.Data;
 using MemoScope.Core.Helpers;
 using System.Collections.Generic;
 using System.Linq;
 using WinFwk.UICommands;
-using MemoScope.Core.Data;
 
 namespace MemoScope.Modules.Finalizer
 {
@@ -11,10 +11,7 @@ namespace MemoScope.Modules.Finalizer
     {
         private List<FinalizerInformation> FinalizerQueue;
 
-        public FinalizerModule()
-        {
-            InitializeComponent();
-        }
+        public FinalizerModule() => InitializeComponent();
 
         public void Setup(ClrDump clrDump)
         {
@@ -46,11 +43,7 @@ namespace MemoScope.Modules.Finalizer
             get
             {
                 var finalizerInformation = dlvFinalizer.SelectedObject<FinalizerInformation>();
-                if (finalizerInformation != null)
-                {
-                    return finalizerInformation.AddressList;
-                }
-                return null;
+                return finalizerInformation?.AddressList;
             }
         }
         ClrDumpType UIDataProvider<ClrDumpType>.Data
@@ -58,11 +51,7 @@ namespace MemoScope.Modules.Finalizer
             get
             {
                 var finalizerInformation = dlvFinalizer.SelectedObject<FinalizerInformation>();
-                if (finalizerInformation != null)
-                {
-                    return new ClrDumpType(ClrDump, finalizerInformation.AddressList.ClrType);
-                }
-                return null;
+                return finalizerInformation != null ? new ClrDumpType(ClrDump, finalizerInformation.AddressList.ClrType) : null;
             }
         }
 

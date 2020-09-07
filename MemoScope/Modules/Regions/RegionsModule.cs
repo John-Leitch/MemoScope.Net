@@ -7,10 +7,7 @@ namespace MemoScope.Modules.Regions
     public partial class RegionsModule : UIClrDumpModule
     {
         private List<RegionInformation> Regions;
-        public RegionsModule()
-        {
-            InitializeComponent();
-        }
+        public RegionsModule() => InitializeComponent();
 
         public void Setup(ClrDump clrDump)
         {
@@ -24,7 +21,7 @@ namespace MemoScope.Modules.Regions
         public override void Init()
         {
             base.Init();
-            Regions = ClrDump.Regions.Select(reg=> new RegionInformation(reg)).ToList();
+            Regions = ClrDump.Regions.Select(reg => new RegionInformation(reg)).ToList();
         }
 
         public override void PostInit()

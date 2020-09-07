@@ -1,21 +1,18 @@
 ﻿using MemoScope.Core;
-using MemoScope.Core.Helpers;
-using WinFwk.UICommands;
 using MemoScope.Core.Data;
+using MemoScope.Core.Helpers;
+using MemoScope.Modules.Instances;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using MemoScope.Modules.Instances;
+using WinFwk.UICommands;
 
 namespace MemoScope.Modules.Disposables
 {
     public partial class DisposableTypesModule : UIClrDumpModule, UIDataProvider<ClrDumpType>
     {
-        List<DisposableTypeInformation> disposableInformations;
+        private List<DisposableTypeInformation> disposableInformations;
 
-        public DisposableTypesModule()
-        {
-            InitializeComponent();
-        }
+        public DisposableTypesModule() => InitializeComponent();
 
         public void Setup(ClrDump clrDump)
         {
@@ -28,10 +25,7 @@ namespace MemoScope.Modules.Disposables
             dlvDisposableTypes.SetTypeNameFilter<DisposableTypeInformation>(regexFilterControl);
         }
 
-        public override void Init()
-        {
-            disposableInformations = DisposableAnalysis.GetDisposableTypeInformations(ClrDump);
-        }
+        public override void Init() => disposableInformations = DisposableAnalysis.GetDisposableTypeInformations(ClrDump);
 
         public override void PostInit()
         {
@@ -45,11 +39,7 @@ namespace MemoScope.Modules.Disposables
             get
             {
                 var delegateInformation = dlvDisposableTypes.SelectedObject<DisposableTypeInformation>();
-                if (delegateInformation != null)
-                {
-                    return new ClrDumpType(ClrDump, delegateInformation.ClrType);
-                }
-                return null;
+                return delegateInformation != null ? new ClrDumpType(ClrDump, delegateInformation.ClrType) : null;
             }
         }
 
@@ -61,7 +51,7 @@ namespace MemoScope.Modules.Disposables
             }
 
             var selectedDelegateType = Data;
-            if(selectedDelegateType == null)
+            if (selectedDelegateType == null)
             {
                 return;
             }

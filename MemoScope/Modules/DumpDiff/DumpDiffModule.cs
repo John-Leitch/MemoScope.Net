@@ -1,24 +1,25 @@
-﻿using MemoScope.Core;
-using MemoScope.Core.Helpers;
-using System.Collections.Generic;
-using WinFwk.UIModules;
-using BrightIdeasSoftware;
-using System.Drawing;
+﻿using BrightIdeasSoftware;
+using MemoScope.Core;
 using MemoScope.Core.Data;
+using MemoScope.Core.Helpers;
 using MemoScope.Modules.Instances;
-using System.Windows.Forms;
-using System.Collections;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
+using System.Windows.Forms;
+using WinFwk.UIModules;
 
 namespace MemoScope.Modules.DumpDiff
 {
-    
+
     public partial class DumpDiffModule : UIModule
     {
         public enum SortMode { Value, AbsValue }
         private List<ClrDump> ClrDumps { get; set; }
-        HashSet<string> typeNames = new HashSet<string>();
+
+        private readonly HashSet<string> typeNames = new HashSet<string>();
 
         public DumpDiffModule()
         {
@@ -32,12 +33,12 @@ namespace MemoScope.Modules.DumpDiff
         {
             ClrDumps = clrDumps;
             Icon = Properties.Resources.subtotal_small;
-            Name = $"Dump diff";
+            Name = "Dump diff";
             dlvDumpDiff.SetUpTypeColumn(colType);
             colType.Text = "Type";
             colType.AspectGetter = o => (string)o;
             ClrDump prevClrDump = null;
-            foreach(var clrDump in ClrDumps.OrderBy( dump => dump.Id))
+            foreach (var clrDump in ClrDumps.OrderBy(dump => dump.Id))
             {
                 var stats = clrDump.GetTypeStats();
                 DiffColumn diffCol = new DiffColumn(clrDump, stats, prevClrDump?.GetTypeStats());
@@ -50,23 +51,19 @@ namespace MemoScope.Modules.DumpDiff
             dlvDumpDiff.FormatCell += OnFormatCell;
             dlvDumpDiff.CellClick += OnCellClick;
             dlvDumpDiff.CustomSorter = DumpDiffSort;
-            
+
             dlvDumpDiff.SetRegexFilter(regexFilterControl, o => (string)o);
         }
 
-        private void DumpDiffSort(OLVColumn column, SortOrder sortOrder)
-        {
-            dlvDumpDiff.ListViewItemSorter = new DumpDiffComparer(column, sortOrder, (SortMode)cbSortMode.SelectedItem);
-        }
+        private void DumpDiffSort(OLVColumn column, SortOrder sortOrder) => dlvDumpDiff.ListViewItemSorter = new DumpDiffComparer(column, sortOrder, (SortMode)cbSortMode.SelectedItem);
 
         private void OnCellClick(object sender, CellClickEventArgs e)
         {
-            if(e.ClickCount != 2)
+            if (e.ClickCount != 2)
             {
                 return;
             }
-            var col = e.Column as DiffColumn;
-            if( col == null)
+            if (!(e.Column is DiffColumn col))
             {
                 return;
             }
@@ -82,32 +79,20 @@ namespace MemoScope.Modules.DumpDiff
 
         private void OnFormatCell(object sender, FormatCellEventArgs e)
         {
-            if (e.Column == colType || e.ColumnIndex <= 1 || e.CellValue == null || ! (e.CellValue is long))
+            if (e.Column == colType || e.ColumnIndex <= 1 || e.CellValue == null || !(e.CellValue is long))
             {
                 return;
             }
 
             var value = (long)e.CellValue;
-            if (value > 0)
-            {
-                e.SubItem.BackColor = Color.LightGreen;
-            }
-            else if (value < 0)
-            {
-                e.SubItem.BackColor = Color.LightPink;
-            }
-            else
-            {
-                e.SubItem.BackColor = Color.LightGray;
-            }
+            e.SubItem.BackColor = value > 0 ? Color.LightGreen : value < 0 ? Color.LightPink : Color.LightGray;
         }
 
         public override void Init()
         {
             foreach (var clrDump in ClrDumps)
             {
-                var stats = clrDump.GetTypeStats();
-                foreach (var stat in stats)
+                foreach (var stat in clrDump.GetTypeStats())
                 {
                     typeNames.Add(stat.Type.Name);
                 }
@@ -119,21 +104,18 @@ namespace MemoScope.Modules.DumpDiff
             base.PostInit();
             Summary = $"{ClrDumps.Count} dumps, {typeNames.Count} types";
 
-            dlvDumpDiff.Objects= typeNames;
+            dlvDumpDiff.Objects = typeNames;
             dlvDumpDiff.Sort(dlvDumpDiff.AllColumns[2], SortOrder.Descending);
         }
 
-        private void cbSortMode_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            dlvDumpDiff.Sort();
-        }
+        private void cbSortMode_SelectedIndexChanged(object sender, EventArgs e) => dlvDumpDiff.Sort();
     }
 
     public class DumpDiffComparer : IComparer
     {
-        OLVColumn column;
-        SortOrder sortOrder;
-        DumpDiffModule.SortMode sortMode;
+        private readonly OLVColumn column;
+        private readonly SortOrder sortOrder;
+        private readonly DumpDiffModule.SortMode sortMode;
         public DumpDiffComparer(OLVColumn column, SortOrder sortOrder, DumpDiffModule.SortMode sortMode)
         {
             this.column = column;
@@ -143,7 +125,7 @@ namespace MemoScope.Modules.DumpDiff
 
         public int Compare(object x, object y)
         {
-            if( sortOrder == SortOrder.None)
+            if (sortOrder == SortOrder.None)
             {
                 return 0;
             }
@@ -162,18 +144,11 @@ namespace MemoScope.Modules.DumpDiff
             {
                 long valueX = objValueX != null ? (long)objValueX : 0;
                 long valueY = objValueY != null ? (long)objValueY : 0;
-                
-                if(sortMode == DumpDiffModule.SortMode.AbsValue)
-                {
-                    res = Math.Abs(valueX) - Math.Abs(valueY);
-                }
-                else
-                {
-                    res = valueX - valueY;
-                }
+
+                res = sortMode == DumpDiffModule.SortMode.AbsValue ? Math.Abs(valueX) - Math.Abs(valueY) : valueX - valueY;
             }
 
-            return sortOrder== SortOrder.Ascending ? (int)res : -(int)res;
+            return sortOrder == SortOrder.Ascending ? (int)res : -(int)res;
         }
     }
 }

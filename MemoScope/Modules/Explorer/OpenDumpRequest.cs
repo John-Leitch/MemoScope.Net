@@ -7,9 +7,6 @@ namespace MemoScope.Modules.Explorer
     public class OpenDumpRequest : AbstractUIMessage
     {
         public IEnumerable<FileInfo> FileInfos { get; }
-        public OpenDumpRequest(IEnumerable<FileInfo> fileInfos)
-        {
-            FileInfos = fileInfos;
-        }
+        public OpenDumpRequest(IEnumerable<FileInfo> fileInfos) => FileInfos = fileInfos;
     }
 }

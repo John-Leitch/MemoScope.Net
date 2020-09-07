@@ -1,5 +1,4 @@
 ﻿using MemoScope.Core;
-using MemoScope.Core.Data;
 using Microsoft.Diagnostics.Runtime;
 using System;
 using System.Collections.Generic;
@@ -18,10 +17,9 @@ namespace MemoScope.Modules.Instances
             ClrDump = clrDump;
             ClrType = clrType;
         }
-        string lastArg = null;
-        List<string> lastFields;
-
-        Dictionary<string, List<string>> cacheField = new Dictionary<string, List<string>>();
+        private string lastArg = null;
+        private List<string> lastFields;
+        private readonly Dictionary<string, List<string>> cacheField = new Dictionary<string, List<string>>();
         private object Eval(string arg)
         {
             List<string> fields;
@@ -29,7 +27,8 @@ namespace MemoScope.Modules.Instances
             {
                 fields = lastFields;
             }
-            else {
+            else
+            {
                 if (!cacheField.TryGetValue(arg, out fields))
                 {
                     fields = arg.Split('.').ToList();
@@ -38,13 +37,12 @@ namespace MemoScope.Modules.Instances
                 lastFields = fields;
                 lastArg = arg;
             }
-            var value = ClrDump.GetFieldValueImpl(Address, ClrType, fields);
-            return value;
+            return ClrDump.GetFieldValueImpl(Address, ClrType, fields);
         }
 
         internal static string GetFuncName(ClrElementType elementType)
         {
-            switch(elementType)
+            switch (elementType)
             {
                 case ClrElementType.Boolean:
                     return nameof(_bool);
@@ -79,78 +77,31 @@ namespace MemoScope.Modules.Instances
             }
         }
 
-        public char _char(string arg)
-        {
-            return (char)Eval(arg);
-        }
+        public char _char(string arg) => (char)Eval(arg);
 
-        public short _short(string arg)
-        {
-            return (short)Eval(arg);
-        }
+        public short _short(string arg) => (short)Eval(arg);
 
-        public ushort _ushort(string arg)
-        {
-            return (ushort)Eval(arg);
-        }
+        public ushort _ushort(string arg) => (ushort)Eval(arg);
         public double _double(string arg)
         {
             var val = Eval(arg);
-            if (val != null)
-            {
-                return (double)val;
-            }
-            return double.NaN;
+            return val != null ? (double)val : double.NaN;
         }
-        public bool _bool(string arg)
-        {
-            return (bool)Eval(arg);
-        }
-        public int _int(string arg)
-        {
-            return (int)Eval(arg);
-        }
-        public long _long(string arg)
-        {
-            return (long)Eval(arg);
-        }
-        public string _string(string arg)
-        {
-            return (string)Eval(arg);
-        }
-        public float _float(string arg)
-        {
-            return (float)Eval(arg);
-        }
-        public byte _byte(string arg)
-        {
-            return (byte)Eval(arg);
-        }
-        public uint _uint(string arg)
-        {
-            return (uint)Eval(arg);
-        }
-        public ulong _ulong(string arg)
-        {
-            return (ulong)Eval(arg);
-        }
-        public DateTime _datetime(string arg)
-        {
-            return (DateTime)Eval(arg);
-        }
-        public decimal _decimal(string arg)
-        {
-            return (decimal)Eval(arg);
-        }
-        public object _obj(string arg)
-        {
-            return Eval(arg);
-        }
-        public long _ptr (string arg)
+        public bool _bool(string arg) => (bool)Eval(arg);
+        public int _int(string arg) => (int)Eval(arg);
+        public long _long(string arg) => (long)Eval(arg);
+        public string _string(string arg) => (string)Eval(arg);
+        public float _float(string arg) => (float)Eval(arg);
+        public byte _byte(string arg) => (byte)Eval(arg);
+        public uint _uint(string arg) => (uint)Eval(arg);
+        public ulong _ulong(string arg) => (ulong)Eval(arg);
+        public DateTime _datetime(string arg) => (DateTime)Eval(arg);
+        public decimal _decimal(string arg) => (decimal)Eval(arg);
+        public object _obj(string arg) => Eval(arg);
+        public long _ptr(string arg)
         {
             var ptr = Eval(arg);
-            var val = (long)ptr;
-            return val;
+            return (long)ptr;
         }
         public override string ToString()
         {

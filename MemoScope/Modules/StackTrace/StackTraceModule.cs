@@ -1,8 +1,8 @@
 ﻿using MemoScope.Core;
+using MemoScope.Core.Helpers;
+using Microsoft.Diagnostics.Runtime;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Diagnostics.Runtime;
-using MemoScope.Core.Helpers;
 
 namespace MemoScope.Modules.StackTrace
 {
@@ -32,8 +32,7 @@ namespace MemoScope.Modules.StackTrace
         {
             base.PostInit();
             Summary = $"Id: {Thread?.ManagedThreadId}";
-            ThreadProperty props;
-            if (Thread != null && ClrDump.ThreadProperties.TryGetValue(Thread.ManagedThreadId, out props) )
+            if (Thread != null && ClrDump.ThreadProperties.TryGetValue(Thread.ManagedThreadId, out ThreadProperty props))
             {
                 Summary = $"Name: {props.Name}, " + Summary;
             }
@@ -41,9 +40,6 @@ namespace MemoScope.Modules.StackTrace
             dlvStackFrames.Objects = StackFrames;
         }
 
-        public override void Init()
-        {
-            StackFrames = ClrDump.Eval(() =>  Thread.StackTrace.Select( frame => new StackFrameInformation(ClrDump, frame) )).ToList();
-        }
+        public override void Init() => StackFrames = ClrDump.Eval(() => Thread.StackTrace.Select(frame => new StackFrameInformation(ClrDump, frame))).ToList();
     }
 }

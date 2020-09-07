@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
-using MemoScope.Core;
-using System.Linq;
+﻿using MemoScope.Core;
 using MemoScope.Core.Data;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using WinFwk.UIMessages;
 using WinFwk.UIModules;
-using System.Threading;
-using System;
 
 namespace MemoScope.Modules.Arrays
 {
@@ -25,7 +25,7 @@ namespace MemoScope.Modules.Arrays
                 {
                     string typeName = type.Name;
                     msgBus.Status($"Analyzing array type: {typeName} ({n:###,###,###,##0}/{nbArrayType:###,###,###,##0})");
-                    if ( token.IsCancellationRequested )
+                    if (token.IsCancellationRequested)
                     {
                         return;
                     }

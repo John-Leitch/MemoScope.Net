@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
-using MemoScope.Modules.Arrays;
-using WinFwk.UIMessages;
+﻿using MemoScope.Modules.Arrays;
+using System.Collections.Generic;
 using System.Threading;
+using WinFwk.UIMessages;
 using WinFwk.UIModules;
-using Microsoft.Diagnostics.Runtime;
 
 namespace MemoScope.Modules.ArrayInstances
 {
@@ -23,7 +22,8 @@ namespace MemoScope.Modules.ArrayInstances
                 var count = arrayAddressList.Addresses.Count;
                 HashSet<object> addresses = new HashSet<object>();
 
-                for (int i=0; i < count; i++) {
+                for (int i = 0; i < count; i++)
+                {
                     if (token.IsCancellationRequested)
                     {
                         break;
@@ -37,14 +37,14 @@ namespace MemoScope.Modules.ArrayInstances
                     float? nullRatio = null;
                     float? uniqueRatio = null;
 
-                    if ( clrType.ContainsPointers )
+                    if (clrType.ContainsPointers)
                     {
                         int nbNull = 0;
                         addresses.Clear();
-                        for (int j=0; j < length; j++)
+                        for (int j = 0; j < length; j++)
                         {
                             object elemAddress = clrType.GetArrayElementValue(address, j);
-                            if( elemAddress is ulong && (ulong)elemAddress == 0)
+                            if (elemAddress is ulong x && x == 0)
                             {
                                 nbNull++;
                             }
@@ -56,13 +56,13 @@ namespace MemoScope.Modules.ArrayInstances
                             {
                                 addresses.Add(elemAddress);
                             }
-                            if (j % 1024 == 0 && j !=0)
+                            if (j % 1024 == 0 && j != 0)
                             {
                                 msgBus.Status($"Analyzing instance: {i:###,###,###,##0} / {count:###,###,###,##0}, element {j:###,###,###,##0} / {length:###,###,###,##0}");
                             }
                         }
                         nullRatio = ((float)nbNull) / length;
-                        uniqueRatio = ((float)addresses.Count+nbNull) / length;
+                        uniqueRatio = ((float)addresses.Count + nbNull) / length;
                     }
 
                     ArrayInstanceInformation info = new ArrayInstanceInformation(clrDump, clrType, address, length, nullRatio, uniqueRatio);

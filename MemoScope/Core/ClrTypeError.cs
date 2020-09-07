@@ -23,13 +23,11 @@ namespace MemoScope.Core
         public override ClrType BaseType => null;
         public override int ElementSize => 0;
         public override int BaseSize => 0;
-        public override IEnumerable<ulong> EnumerateMethodTables() => new ulong[0];
+        public override IEnumerable<ulong> EnumerateMethodTables() => Array.Empty<ulong>();
+
         public override IList<ClrInstanceField> Fields => new List<ClrInstanceField>();
 
-        public ClrTypeError(string typeName)
-        {
-            Name = $"Error({typeName})";
-        }
+        public ClrTypeError(string typeName) => Name = $"Error({typeName})";
 
         public override void EnumerateRefsOfObject(ulong objRef, Action<ulong, int> action)
         {
@@ -42,8 +40,11 @@ namespace MemoScope.Core
         }
 
         public override ulong GetArrayElementAddress(ulong objRef, int index) => 0;
+
         public override object GetArrayElementValue(ulong objRef, int index) => null;
+
         public override int GetArrayLength(ulong objRef) => 0;
+
         public override ClrInstanceField GetFieldByName(string name) => null;
 
         public override bool GetFieldForOffset(int fieldOffset, bool inner, out ClrInstanceField childField, out int childFieldOffset)
@@ -54,6 +55,7 @@ namespace MemoScope.Core
         }
 
         public override ulong GetSize(ulong objRef) => 0;
+
         public override ClrStaticField GetStaticFieldByName(string name) => null;
     }
 }

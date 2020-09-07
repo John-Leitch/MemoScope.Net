@@ -1,6 +1,6 @@
 using BrightIdeasSoftware;
-using Microsoft.Diagnostics.Runtime;
 using MemoScope.Core.Data;
+using Microsoft.Diagnostics.Runtime;
 using WinFwk.UITools;
 
 namespace MemoScope.Core
@@ -30,7 +30,7 @@ namespace MemoScope.Core
         public ClrTypeStats(int id, ClrType type, long nbInstances, ulong totalSize) : this(id, type)
         {
             NbInstances = nbInstances;
-            TotalSize= totalSize;
+            TotalSize = totalSize;
             TypeName = Type.Name;
         }
 

@@ -1,6 +1,6 @@
-﻿using MemoScope.Core.Data;
-using BrightIdeasSoftware;
+﻿using BrightIdeasSoftware;
 using MemoScope.Core;
+using MemoScope.Core.Data;
 using Microsoft.Diagnostics.Runtime;
 using ClrObject = MemoScope.Core.Data.ClrObject;
 
@@ -8,10 +8,10 @@ namespace MemoScope.Modules.Delegates
 {
     public class LoneTargetInformation : IAddressData, ITypeNameData
     {
-        private ClrDump clrDump;
-        private ClrMethod methInfo;
-        private ClrObject target;
-        ClrObject owner;
+        private readonly ClrDump clrDump;
+        private readonly ClrMethod methInfo;
+        private readonly ClrObject target;
+        private readonly ClrObject owner;
         public LoneTargetInformation(ClrDump clrDump, ClrObject target, ClrMethod methInfo, ClrObject owner)
         {
             this.clrDump = clrDump;

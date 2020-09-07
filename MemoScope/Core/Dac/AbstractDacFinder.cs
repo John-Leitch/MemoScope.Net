@@ -1,22 +1,22 @@
+using Microsoft.Diagnostics.Runtime;
+using Microsoft.Win32.SafeHandles;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
-using Microsoft.Diagnostics.Runtime;
-using Microsoft.Win32.SafeHandles;
 
 namespace MemoScope.Core.Dac
 {
     public abstract class AbstractDacFinder : IDisposable
     {
-        [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern LibrarySafeHandle LoadLibrary(string name);
+        [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+        internal static extern LibrarySafeHandle LoadLibrary(string name);
 
         [DllImport("kernel32.dll", SetLastError = true)]
-        static extern bool FreeLibrary(IntPtr hModule);
+        private static extern bool FreeLibrary(IntPtr hModule);
 
-        protected LibrarySafeHandle dbgHelpLib;
+        internal LibrarySafeHandle dbgHelpLib;
         protected Process process;
         protected readonly string searchPath;
 
@@ -42,46 +42,41 @@ namespace MemoScope.Core.Dac
                 throw new InvalidOperationException("SymInitialize: Unexpected error occured.", new Win32Exception(Marshal.GetLastWin32Error()));
         }
 
-        public string FindDac(ClrInfo clrInfo)
-        {
-            var dac = FindDac(clrInfo.DacInfo.FileName, clrInfo.DacInfo.TimeStamp, clrInfo.DacInfo.FileSize);
-            return dac;
-        }
+        public string FindDac(ClrInfo clrInfo) => FindDac(clrInfo.DacInfo.FileName, clrInfo.DacInfo.TimeStamp, clrInfo.DacInfo.FileSize);
 
         public string FindDac(string dacname, uint timestamp, uint fileSize)
         {
             StringBuilder symbolFile = new StringBuilder(2048);
-            if (SymFindFileInPath(process.Handle, searchPath, dacname, timestamp, fileSize, 0, 0x02, symbolFile, IntPtr.Zero, IntPtr.Zero))
-            {
-                return symbolFile.ToString();
-            }
-
-            throw new InvalidOperationException($"Unable to find dac file '{dacname}' in symbol server.", new Win32Exception(Marshal.GetLastWin32Error()));
+            return SymFindFileInPath(process.Handle, searchPath, dacname, timestamp, fileSize, 0, 0x02, symbolFile, IntPtr.Zero, IntPtr.Zero)
+                ? symbolFile.ToString()
+                : throw new InvalidOperationException($"Unable to find dac file '{dacname}' in symbol server.", new Win32Exception(Marshal.GetLastWin32Error()));
         }
 
-        public class LibrarySafeHandle : SafeHandleZeroOrMinusOneIsInvalid
+        internal class LibrarySafeHandle : SafeHandleZeroOrMinusOneIsInvalid
         {
             public LibrarySafeHandle() : base(true)
             {
             }
-            public LibrarySafeHandle(IntPtr handle) : base(true)
-            {
-                SetHandle(handle);
-            }
-            protected override bool ReleaseHandle()
-            {
-                return FreeLibrary(this.handle);
-            }
+            public LibrarySafeHandle(IntPtr handle) : base(true) => SetHandle(handle);
+            protected override bool ReleaseHandle() => FreeLibrary(this.handle);
         }
 
         public void Dispose()
         {
             if (process != null)
             {
-                SymCleanup(process.Handle);
+                try
+                {
+                    SymCleanup(process.Handle);
+                }
+                finally
+                {
+                    process.Dispose();
+                }
+
                 process = null;
             }
-            if (dbgHelpLib == null || dbgHelpLib.IsClosed)
+            if (dbgHelpLib?.IsClosed != false)
                 return;
             dbgHelpLib.Dispose();
             dbgHelpLib = null;

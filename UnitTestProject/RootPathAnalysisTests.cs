@@ -23,9 +23,9 @@ namespace UnitTestProject
         [Test]
         public void RootPathAnalysisTest_1()
         {
-            clrDump.Add(1, 2, 3 );
+            clrDump.Add(1, 2, 3);
             ulong[] shortestPath = new ulong[] { 1, 2 };
-            Run(1, shortestPath );
+            Run(1, shortestPath);
         }
 
         [Test]
@@ -39,11 +39,11 @@ namespace UnitTestProject
                 |_ 3
             */
 
-            clrDump.Add(1, 2, 3 );
-            clrDump.Add(2, 4 );
-            clrDump.Add(4, 5 );
+            clrDump.Add(1, 2, 3);
+            clrDump.Add(2, 4);
+            clrDump.Add(4, 5);
 
-            ulong[] shortestPath = new ulong[] { 1, 3};
+            ulong[] shortestPath = new ulong[] { 1, 3 };
             Run(1, shortestPath);
         }
 
@@ -93,7 +93,7 @@ namespace UnitTestProject
             clrDump.Add(3, 6);
             clrDump.Add(4, 5);
 
-            ulong[] shortestPath = new ulong[] { 1, 7, 8};
+            ulong[] shortestPath = new ulong[] { 1, 7, 8 };
             Run(1, shortestPath);
         }
 
@@ -146,7 +146,7 @@ namespace UnitTestProject
             Run(1, shortestPath);
         }
 
-        private void Run(ulong address, ulong[] expectedPath, bool result=true)
+        private void Run(ulong address, ulong[] expectedPath, bool result = true)
         {
             currentPath.Add(address);
             var res = RootPathAnalysis.FindShortestPath(currentPath, ref shortestPath, clrDump);
@@ -157,7 +157,7 @@ namespace UnitTestProject
         private HashSet<ulong> BuildRoots(ulong[] v)
         {
             var roots = new HashSet<ulong>();
-            foreach(var address in v)
+            foreach (var address in v)
             {
                 roots.Add(address);
             }
@@ -179,24 +179,15 @@ namespace UnitTestProject
 
     public class MockClrDump : IClrDump
     {
-        public void Add(ulong address, params ulong[] referers)
-        {
-            this.referers[address] = referers;
-        }
-        Dictionary<ulong, ulong[]> referers = new Dictionary<ulong, ulong[]>();
+        public void Add(ulong address, params ulong[] referers) => this.referers[address] = referers;
+
+        readonly Dictionary<ulong, ulong[]> referers = new Dictionary<ulong, ulong[]>();
         public IEnumerable<ulong> EnumerateReferers(ulong address)
         {
             ulong[] refs;
-            if( referers.TryGetValue(address, out refs))
-            {
-                return refs;
-            }
-            return new ulong[0];
+            return referers.TryGetValue(address, out refs) ? refs : (new ulong[0]);
         }
 
-        public bool HasReferers(ulong address)
-        {
-            return referers.ContainsKey(address);
-        }
+        public bool HasReferers(ulong address) => referers.ContainsKey(address);
     }
 }

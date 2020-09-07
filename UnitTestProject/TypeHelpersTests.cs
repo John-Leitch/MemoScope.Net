@@ -1,5 +1,4 @@
-﻿using MemoScope.Core;
-using MemoScope.Core.Helpers;
+﻿using MemoScope.Core.Helpers;
 using NUnit.Framework;
 using System.Collections.Generic;
 
@@ -11,12 +10,13 @@ namespace UnitTestProject
         [Test]
         public void RealFieldNameWithSuffixTest()
         {
-            Dictionary<string, string> fields = new Dictionary<string, string>() {
+            Dictionary<string, string> fields = new Dictionary<string, string>()
+            {
                 ["aaaaa"] = "aaaaa",
                 ["<aaaa>k__BackingField"] = "aaaa &"
             };
 
-            foreach(var field in fields)
+            foreach (var field in fields)
             {
                 Assert.That(TypeHelpers.RealName(field.Key, " &"), Is.EqualTo(field.Value));
             }
@@ -40,11 +40,13 @@ namespace UnitTestProject
         [Test]
         public void TypeAliasTest()
         {
-            List<TypeAlias> typeAliases = new List<TypeAlias>();
-            typeAliases.Add(new TypeAlias { OldTypeName = "System.Int16", NewTypeName = "int" });
-            typeAliases.Add(new TypeAlias { OldTypeName = "System.Boolean", NewTypeName = "bool" });
-            typeAliases.Add(new TypeAlias { OldTypeName = "System.Object", NewTypeName = "object" });
-            typeAliases.Add(new TypeAlias { OldTypeName = "System.Collections.Generic", NewTypeName = "sys.col.gen" });
+            List<TypeAlias> typeAliases = new List<TypeAlias>
+            {
+                new TypeAlias { OldTypeName = "System.Int16", NewTypeName = "int" },
+                new TypeAlias { OldTypeName = "System.Boolean", NewTypeName = "bool" },
+                new TypeAlias { OldTypeName = "System.Object", NewTypeName = "object" },
+                new TypeAlias { OldTypeName = "System.Collections.Generic", NewTypeName = "sys.col.gen" }
+            };
 
             Dictionary<string, string> fields = new Dictionary<string, string>()
             {

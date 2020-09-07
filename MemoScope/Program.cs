@@ -20,9 +20,10 @@ namespace MemoScope
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            var memoScopeForm = new MemoScopeForm();
-            FileInfo[] fileInfos = args.Select(arg => new FileInfo(arg)).ToArray();
-            memoScopeForm.AutoLoadFiles = fileInfos;
+            var memoScopeForm = new MemoScopeForm
+            {
+                AutoLoadFiles = args.Select(arg => new FileInfo(arg)).ToArray()
+            };
             Application.Run(memoScopeForm);
         }
     }

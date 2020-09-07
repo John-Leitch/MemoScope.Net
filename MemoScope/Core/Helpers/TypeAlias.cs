@@ -13,16 +13,13 @@ namespace MemoScope.Core.Helpers
         [XmlIgnore]
         public Color BackColor
         {
-            get;set;
+            get; set;
         }
 
         [Browsable(false)]
         public string BackColorRGB
         {
-            get
-            {
-                return BackColor.R +","+BackColor.G+","+BackColor.B;
-            }
+            get => BackColor.R + "," + BackColor.G + "," + BackColor.B;
             set
             {
                 string[] c = value.Split(',');
@@ -38,10 +35,7 @@ namespace MemoScope.Core.Helpers
         [Browsable(false)]
         public string ForeColorRGB
         {
-            get
-            {
-                return ForeColor.R + "," + ForeColor.G + "," + ForeColor.B;
-            }
+            get => ForeColor.R + "," + ForeColor.G + "," + ForeColor.B;
             set
             {
                 string[] c = value.Split(',');
@@ -49,14 +43,10 @@ namespace MemoScope.Core.Helpers
             }
         }
 
-        public override int GetHashCode()
-        {
-            return (OldTypeName == null ? 0 : OldTypeName.GetHashCode()) + 37 * (NewTypeName == null ? 0 : NewTypeName.GetHashCode());
-        }
+        public override int GetHashCode() => ((OldTypeName?.GetHashCode()) ?? 0) + 37 * ((NewTypeName?.GetHashCode()) ?? 0);
         public override bool Equals(object o)
         {
-            var other = o as TypeAlias;
-            if (other == null)
+            if (!(o is TypeAlias other))
             {
                 return false;
             }
@@ -64,9 +54,6 @@ namespace MemoScope.Core.Helpers
             bool b2 = other.OldTypeName == OldTypeName;
             return b1 && b2;
         }
-        public override string ToString()
-        {
-            return "["+(Active ? "+": "-")+"] "+ OldTypeName + " => " + NewTypeName;
-        }
+        public override string ToString() => "[" + (Active ? "+" : "-") + "] " + OldTypeName + " => " + NewTypeName;
     }
 }

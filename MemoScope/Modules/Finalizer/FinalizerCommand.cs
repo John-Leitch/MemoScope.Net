@@ -11,9 +11,6 @@ namespace MemoScope.Modules.Finalizer
 
         }
 
-        protected override void HandleData(ClrDump clrDump)
-        {
-            UIModuleFactory.CreateModule<FinalizerModule>(module => { module.UIModuleParent = selectedModule; module.Setup(clrDump); }, module => DockModule(module));
-        }
+        protected override void HandleData(ClrDump clrDump) => UIModuleFactory.CreateModule<FinalizerModule>(module => { module.UIModuleParent = selectedModule; module.Setup(clrDump); }, module => DockModule(module));
     }
 }

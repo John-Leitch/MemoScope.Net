@@ -20,10 +20,10 @@ namespace MemoDummy
             objectsArray = new object[NbObjects];
             objectsSet = new HashSet<object>();
 
-            for(int i=0; i < NbObjects; i++)
+            for (int i = 0; i < NbObjects; i++)
             {
                 var o = new ComplexObject();
-                switch (i%3)
+                switch (i % 3)
                 {
                     case 0:
                         objectsList.Add(o);

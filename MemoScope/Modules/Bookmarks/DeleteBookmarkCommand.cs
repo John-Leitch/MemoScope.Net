@@ -6,7 +6,7 @@ namespace MemoScope.Modules.Bookmarks
 {
     public class DeleteBookmarkCommand : AbstractDataUICommand<ClrDumpObject>
     {
-        public DeleteBookmarkCommand() : base("Delete", "Delete bookmark on instance", "Bookmarks", Properties.Resources.award_star_delete)  
+        public DeleteBookmarkCommand() : base("Delete", "Delete bookmark on instance", "Bookmarks", Properties.Resources.award_star_delete)
         {
 
         }

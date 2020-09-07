@@ -1,16 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using MemoScope.Core.Helpers;
+using MemoScope.Tools.CodeTriggers;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
 using WinFwk.UITools.Settings;
-using MemoScope.Core.Helpers;
-using MemoScope.Tools.CodeTriggers;
 
 namespace MemoScope
 {
     public enum DockPanelPosition { Left, Right }
     public class MemoScopeSettings : UISettings
     {
-        public new static MemoScopeSettings Instance => UISettings.Instance as MemoScopeSettings;
+        public static new MemoScopeSettings Instance => UISettings.Instance as MemoScopeSettings;
 
         [Category("_Main_")]
         public string RootDir { get; set; }
@@ -33,9 +33,6 @@ namespace MemoScope
         [Category("Instances")]
         public List<CodeTrigger> InstanceFilters { get; set; } = new List<CodeTrigger>();
 
-        public void Save()
-        {
-            UISettingsMgr<MemoScopeSettings>.Save(Application.ProductName, this);
-        }
+        public void Save() => UISettingsMgr<MemoScopeSettings>.Save(Application.ProductName, this);
     }
 }

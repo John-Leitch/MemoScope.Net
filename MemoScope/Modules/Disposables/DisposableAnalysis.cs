@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using MemoScope.Core;
+﻿using MemoScope.Core;
+using System.Collections.Generic;
 using System.Threading;
 using WinFwk.UIModules;
 
@@ -25,7 +25,7 @@ namespace MemoScope.Modules.Disposables
 
                 foreach (var interf in type.Interfaces)
                 {
-                    if( interf.Name == typeof(System.IDisposable).FullName)
+                    if (interf.Name == typeof(System.IDisposable).FullName)
                     {
                         clrDump.MessageBus.Status($"Analyzing IDisposable type: counting instances for {type.Name}");
                         int nb = clrDump.CountInstances(type);

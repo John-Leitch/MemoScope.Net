@@ -5,7 +5,7 @@ using WinFwk.UIModules;
 
 namespace MemoScope.Modules.TypeDetails
 {
-    public class TypeDetailsCommand :  AbstractDataUICommand<ClrDumpType>
+    public class TypeDetailsCommand : AbstractDataUICommand<ClrDumpType>
     {
         public TypeDetailsCommand() : base("Type", "Display type details", "Dump", Properties.Resources.blueprint_large)
         {
@@ -14,7 +14,7 @@ namespace MemoScope.Modules.TypeDetails
 
         protected override void HandleData(ClrDumpType data)
         {
-            if( data == null)
+            if (data == null)
             {
                 throw new InvalidOperationException("No type selected !");
             }

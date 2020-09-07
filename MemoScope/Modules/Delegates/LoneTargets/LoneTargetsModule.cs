@@ -6,12 +6,9 @@ namespace MemoScope.Modules.Delegates.LoneHandlers
 {
     public partial class LoneTargetsModule : UIClrDumpModule
     {
-        List<LoneTargetInformation> loneTargetInformations;
+        private List<LoneTargetInformation> loneTargetInformations;
 
-        public LoneTargetsModule()
-        {
-            InitializeComponent();
-        }
+        public LoneTargetsModule() => InitializeComponent();
 
         public void Setup(ClrDump clrDump)
         {
@@ -27,10 +24,7 @@ namespace MemoScope.Modules.Delegates.LoneHandlers
 
         }
 
-        public override void Init()
-        {
-            loneTargetInformations = DelegatesAnalysis.GetLoneTargetInformations(ClrDump);
-        }
+        public override void Init() => loneTargetInformations = DelegatesAnalysis.GetLoneTargetInformations(ClrDump);
 
         public override void PostInit()
         {

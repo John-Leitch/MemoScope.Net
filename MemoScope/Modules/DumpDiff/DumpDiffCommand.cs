@@ -15,11 +15,11 @@ namespace MemoScope.Modules.DumpDiff
 
         protected override void HandleData(List<ClrDump> clrDumps)
         {
-            if( clrDumps == null || clrDumps.Count < 2)
+            if (clrDumps == null || clrDumps.Count < 2)
             {
                 throw new InvalidOperationException("Please, select two or more dumps in the workplace module !");
             }
-            UIModuleFactory.CreateModule<DumpDiffModule>(module => { module.Setup(clrDumps); }, module => DockModule(module));
+            UIModuleFactory.CreateModule<DumpDiffModule>(module => module.Setup(clrDumps), module => DockModule(module));
         }
     }
 }

@@ -22,19 +22,10 @@ namespace MemoScope.Modules.Process
 
         public System.Diagnostics.Process Process { get; }
 
-        public ProcessWrapper(System.Diagnostics.Process process)
-        {
-            Process = process;
-        }
+        public ProcessWrapper(System.Diagnostics.Process process) => Process = process;
 
-        public bool Equals(ProcessWrapper other)
-        {
-            return other.Process.Id == Process.Id;
-        }
+        public bool Equals(ProcessWrapper other) => other.Process.Id == Process.Id;
 
-        public override string ToString()
-        {
-            return string.Format("[{1}] {0}", Process.ProcessName, Process.Id);
-        }
+        public override string ToString() => string.Format("[{1}] {0}", Process.ProcessName, Process.Id);
     }
 }

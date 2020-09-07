@@ -12,15 +12,9 @@ namespace MemoScope.Core.Data
         public AddressList(ClrDump clrDump, ClrType clrType, List<ulong> addresseList) : this(clrDump, clrType, new AddressContainerList(addresseList))
         {
         }
-        public AddressList(ClrDump clrDump, ClrType clrType, IAddressContainer addresses) : this(clrDump, clrType)
-        {
-            Init(addresses);
-        }
+        public AddressList(ClrDump clrDump, ClrType clrType, IAddressContainer addresses) : this(clrDump, clrType) => Init(addresses);
 
-        protected void Init(IAddressContainer addresses)
-        {
-            Addresses = addresses;
-        }
+        protected void Init(IAddressContainer addresses) => Addresses = addresses;
 
         public AddressList(ClrDump clrDump, ClrType clrType)
         {
@@ -29,7 +23,7 @@ namespace MemoScope.Core.Data
         }
     }
 
-    public interface IAddressContainer 
+    public interface IAddressContainer
     {
         int Count { get; }
         ulong this[int index] { get; }

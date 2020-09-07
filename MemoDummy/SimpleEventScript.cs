@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 
 namespace MemoDummy
 {
@@ -12,14 +13,14 @@ namespace MemoDummy
         [Category("Config")]
         public long N { get; set; } = 300;
         [Description("Nb instances that are only referenced by an event/delegate")]
-        public int M  { get; set; } = 10;
+        public int M { get; set; } = 10;
 
         private List<object> objects;
 
         public override void Run()
         {
             objects = new List<object>();
-            for(int i=0; i < N; i++)
+            for (int i = 0; i < N; i++)
             {
                 var obj = new ClassWithEventHandlers();
                 var firstCallBack = new FirstCallBacks();
@@ -38,18 +39,13 @@ namespace MemoDummy
 
     public class FirstCallBacks
     {
-        public int MyFirstCallBack(int x, int y)
-        {
-            throw new NotImplementedException();
-        }
+        [SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "Test Code")]
+        public int MyFirstCallBack(int x, int y) => throw new NotImplementedException();
     }
 
     public class SecondCallBacks
     {
-        public void MySecondCallBack(string s)
-        {
-            throw new NotImplementedException();
-        }
+        public void MySecondCallBack(string s) => throw new NotImplementedException();
     }
 
     public class ClassWithEventHandlers
@@ -60,13 +56,7 @@ namespace MemoDummy
         public event MyIntDelegate FirstEventHandler;
         public event MyVoidDelegate SecondEventHandler;
 
-        public void InvokeFirstEventHandler()
-        {
-            if(FirstEventHandler != null) FirstEventHandler(0,1 );
-        }
-        public void InvokeSecondEventHandler()
-        {
-            if (SecondEventHandler != null) SecondEventHandler(string.Empty);
-        }
+        public void InvokeFirstEventHandler() => FirstEventHandler?.Invoke(0, 1);
+        public void InvokeSecondEventHandler() => SecondEventHandler?.Invoke(string.Empty);
     }
 }

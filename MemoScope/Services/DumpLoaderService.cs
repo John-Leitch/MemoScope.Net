@@ -1,14 +1,14 @@
-﻿using System;
-using System.Threading.Tasks;
-using System.Threading.Tasks.Schedulers;
-using MemoScope.Core;
+﻿using MemoScope.Core;
 using MemoScope.Modules.Explorer;
 using Microsoft.Diagnostics.Runtime;
+using System;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Threading.Tasks.Schedulers;
 using WinFwk.UIMessages;
 using WinFwk.UIServices;
-using System.Threading;
 using WinFwk.UITools.Log;
-using System.Linq;
 
 namespace MemoScope.Services
 {
@@ -36,9 +36,10 @@ namespace MemoScope.Services
                     {
                         target = DataTarget.LoadCrashDump(fileInfo.FullName);
 
-                        if ( (  Environment.Is64BitProcess && target.PointerSize != 8 )
-                        || (! Environment.Is64BitProcess && target.PointerSize != 4) )                        { 
-                            throw new InvalidOperationException($"Wrong architecture ! Dumpfile : {target.PointerSize*8} bits, Environment.Is64BitProcess : {Environment.Is64BitProcess}");
+                        if ((Environment.Is64BitProcess && target.PointerSize != 8)
+                        || (!Environment.Is64BitProcess && target.PointerSize != 4))
+                        {
+                            throw new InvalidOperationException($"Wrong architecture ! Dumpfile : {target.PointerSize * 8} bits, Environment.Is64BitProcess : {Environment.Is64BitProcess}");
                         }
 
                         var clrDump = new ClrDump(target, fileInfo.FullName, MessageBus);
@@ -54,7 +55,7 @@ namespace MemoScope.Services
                             EndTask($"File loaded: {fileInfo.FullName}");
                         }
                     }
-                    catch(Exception ex) 
+                    catch (Exception ex)
                     {
                         string msg = $"Failed to load dump file: {fileInfo.FullName}";
                         EndTask(msg);

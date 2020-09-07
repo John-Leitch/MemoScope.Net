@@ -7,17 +7,13 @@ namespace MemoDummy
 {
     public partial class MemoDummyForm : Form
     {
-        public MemoDummyForm()
-        {
-            InitializeComponent();
-        }
+        public MemoDummyForm() => InitializeComponent();
 
         private void MemoDummyForm_Load(object sender, System.EventArgs e)
         {
-            var types = Assembly.GetExecutingAssembly().GetTypes();
-            foreach (var type in types)
+            foreach (var type in Assembly.GetExecutingAssembly().GetTypes())
             {
-                if (type.IsSubclassOf(typeof (AbstractMemoScript)))
+                if (type.IsSubclassOf(typeof(AbstractMemoScript)))
                 {
                     var script = Activator.CreateInstance(type);
                     lbScripts.Items.Add(script);
@@ -29,7 +25,7 @@ namespace MemoDummy
         private void lbScripts_SelectedIndexChanged(object sender, EventArgs e)
         {
             script = lbScripts.SelectedItem as AbstractMemoScript;
-            propertyGrid1.SelectedObject = script ;
+            propertyGrid1.SelectedObject = script;
             btnRun.Enabled = script != null;
         }
 
@@ -39,10 +35,11 @@ namespace MemoDummy
             {
                 timer1.Enabled = true;
                 var sched = TaskScheduler.FromCurrentSynchronizationContext();
-                Task.Factory.StartNew(() => script.Run()).ContinueWith(task => {
+                Task.Factory.StartNew(() => script.Run()).ContinueWith(task =>
+                {
                     timer1.Enabled = false;
                     propertyGrid1.Refresh();
-                    }, sched);
+                }, sched);
             }
         }
 
@@ -53,9 +50,6 @@ namespace MemoDummy
                 script.Stop();
         }
 
-        private void timer1_Tick(object sender, EventArgs e)
-        {
-            propertyGrid1.Refresh(); 
-        }
+        private void timer1_Tick(object sender, EventArgs e) => propertyGrid1.Refresh();
     }
 }

@@ -11,9 +11,6 @@ namespace MemoScope.Modules.Strings
 
         }
 
-        protected override void HandleData(ClrDump clrDump)
-        {
-            UIModuleFactory.CreateModule<StringsModule>(module => { module.UIModuleParent = selectedModule; module.Setup(clrDump); }, module => DockModule(module));
-        }
+        protected override void HandleData(ClrDump clrDump) => UIModuleFactory.CreateModule<StringsModule>(module => { module.UIModuleParent = selectedModule; module.Setup(clrDump); }, module => DockModule(module));
     }
 }

@@ -6,8 +6,8 @@ namespace MemoScope.Modules.TypeDetails
 {
     internal class MethodInformation : ITypeNameData
     {
-        private ClrMethod clrMethod;
-        private ClrDumpType dumpType;
+        private readonly ClrMethod clrMethod;
+        private readonly ClrDumpType dumpType;
 
         public MethodInformation(ClrDumpType dumpType, ClrMethod clrMethod)
         {
@@ -46,6 +46,6 @@ namespace MemoScope.Modules.TypeDetails
         [OLVColumn(Title = "IsVirtual", Width = 100)]
         public bool IsVirtual => clrMethod.IsVirtual;
 
-        public ClrType ClrType=> clrMethod.Type;
+        public ClrType ClrType => clrMethod.Type;
     }
 }

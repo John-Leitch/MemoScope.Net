@@ -1,20 +1,17 @@
-﻿using MemoScope.Core;
+﻿using BrightIdeasSoftware;
+using MemoScope.Core;
+using MemoScope.Core.Data;
 using Microsoft.Diagnostics.Runtime;
 using System.Collections.Generic;
-using MemoScope.Core.Data;
-using BrightIdeasSoftware;
 using WinFwk.UITools;
 
 namespace MemoScope.Modules.Finalizer
 {
-    public class FinalizerInformation: ITypeNameData
+    public class FinalizerInformation : ITypeNameData
     {
         public AddressList AddressList { get; }
 
-        public FinalizerInformation(ClrDump clrDump, ClrType type, List<ulong> addresses)
-        {
-            AddressList = new AddressList(clrDump, type, addresses);
-        }
+        public FinalizerInformation(ClrDump clrDump, ClrType type, List<ulong> addresses) => AddressList = new AddressList(clrDump, type, addresses);
 
         [OLVColumn]
         public string TypeName => AddressList.ClrType.Name;

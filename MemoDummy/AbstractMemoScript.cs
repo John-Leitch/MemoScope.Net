@@ -15,14 +15,8 @@ namespace MemoDummy
 
         public abstract void Run();
 
-        public override string ToString()
-        {
-            return Name;
-        }
+        public override string ToString() => Name;
 
-        public void Stop()
-        {
-            stopRequested = true;
-        }
+        public void Stop() => stopRequested = true;
     }
 }

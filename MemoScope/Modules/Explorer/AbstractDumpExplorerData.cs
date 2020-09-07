@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using BrightIdeasSoftware;
+using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
-using BrightIdeasSoftware;
 using WinFwk.UITools;
-using System;
 
 namespace MemoScope.Modules.Explorer
 {
@@ -28,13 +28,13 @@ namespace MemoScope.Modules.Explorer
                 if (File.Exists(cachePath))
                 {
                     FileInfo cacheFileInfo = new FileInfo(cachePath);
-                    return Math.Max(cacheFileInfo.Length / (long)1e6, 1) ;
+                    return Math.Max(cacheFileInfo.Length / (long)1e6, 1);
                 }
 
                 return null;
             }
         }
-        [OLVColumn(Title = "Delete Cache", Width=100, TextAlign =HorizontalAlignment.Center)]
+        [OLVColumn(Title = "Delete Cache", Width = 100, TextAlign = HorizontalAlignment.Center)]
         public string DeleteCache => CacheSize != null ? "Delete" : null;
 
         [OLVColumn(Title = "Machine", Width = 100)]
@@ -68,31 +68,26 @@ namespace MemoScope.Modules.Explorer
         [IntColumn(Title = "Handles", Width = 50)]
         public virtual long? HandleCount => null;
 
-        public virtual string GetCachePath()
-        {
-            return null;
-        }
+        public virtual string GetCachePath() => null;
 
         public abstract FileInfo FileInfo { get; }
 
         public static List<AbstractDumpExplorerData> GetItems(string mainDir)
         {
             List<AbstractDumpExplorerData> items = new List<AbstractDumpExplorerData>();
-            if (! Directory.Exists(mainDir))
+            if (!Directory.Exists(mainDir))
             {
                 return items;
             }
             try
             {
-                string[] dirs = Directory.GetDirectories(mainDir);
-                foreach (var dir in dirs)
+                foreach (var dir in Directory.GetDirectories(mainDir))
                 {
                     DirectoryInfo dirInfo = new DirectoryInfo(dir);
                     var x = new DirectoryData(dirInfo);
                     items.Add(x);
                 }
-                string[] files = Directory.GetFiles(mainDir, "*.dmp");
-                foreach (var file in files)
+                foreach (var file in Directory.GetFiles(mainDir, "*.dmp"))
                 {
                     FileInfo fileInfo = new FileInfo(file);
                     var f = new FileData(fileInfo);
@@ -101,7 +96,7 @@ namespace MemoScope.Modules.Explorer
             }
             catch (UnauthorizedAccessException)
             {
-                
+
             }
             return items;
         }

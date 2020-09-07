@@ -1,10 +1,10 @@
 ﻿using BrightIdeasSoftware;
 using MemoScope.Core;
+using MemoScope.Core.Data;
 using MemoScope.Core.Helpers;
 using Microsoft.Diagnostics.Runtime;
 using System.Collections.Generic;
 using System.Linq;
-using MemoScope.Core.Data;
 
 namespace MemoScope.Modules.TypeDetails
 {

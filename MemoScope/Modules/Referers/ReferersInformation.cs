@@ -29,10 +29,10 @@ namespace MemoScope.Modules.Referers
         public HashSet<ulong> References { get; }
 
         public ClrType ClrType { get; }
-        ClrDump ClrDump { get; }
-        MessageBus MessageBus { get; }
+        private ClrDump ClrDump { get; }
+        private MessageBus MessageBus { get; }
 
-        private int parentCount;
+        private readonly int parentCount;
 
         public ReferersInformation(ClrDump clrDump, ClrType clrType, string fieldName, MessageBus messageBus, int parentCount)
         {
@@ -54,19 +54,10 @@ namespace MemoScope.Modules.Referers
             Init();
         }
 
-        public void Init()
-        {
-            CanExpand = ReferersAnalysis.HasReferers(MessageBus, ClrDump, Instances);
-        }
+        public void Init() => CanExpand = ReferersAnalysis.HasReferers(MessageBus, ClrDump, Instances);
 
-        public override bool CanExpand {get ; set;}
+        public override bool CanExpand { get; set; }
 
-        public override List<ReferersInformation> Children
-        {
-            get
-            {
-                return ReferersAnalysis.AnalyzeReferers(MessageBus, ClrDump, Instances);
-            }
-        }
+        public override List<ReferersInformation> Children => ReferersAnalysis.AnalyzeReferers(MessageBus, ClrDump, Instances);
     }
 }

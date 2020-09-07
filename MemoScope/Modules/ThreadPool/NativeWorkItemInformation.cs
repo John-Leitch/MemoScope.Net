@@ -5,16 +5,13 @@ namespace MemoScope.Modules.ThreadPool
 {
     public class NativeWorkItemInformation
     {
-        private NativeWorkItem workItem;
+        private readonly NativeWorkItem workItem;
 
-        public NativeWorkItemInformation(NativeWorkItem workItem)
-        {
-            this.workItem = workItem;
-        }
+        public NativeWorkItemInformation(NativeWorkItem workItem) => this.workItem = workItem;
 
         [OLVColumn]
         public WorkItemKind Kind => workItem.Kind;
         [OLVColumn]
-        public ulong Data=> workItem.Data;
+        public ulong Data => workItem.Data;
     }
 }

@@ -7,14 +7,11 @@ namespace MemoScope.Tools.RegexFilter
 {
     public partial class RegexFilterControl : UserControl
     {
-        Regex regex;
+        private Regex regex;
         public event Action<Regex> RegexApplied;
         public event Action RegexCancelled;
 
-        public RegexFilterControl()
-        {
-            InitializeComponent();
-        }
+        public RegexFilterControl() => InitializeComponent();
 
         private void tbRegex_KeyUp(object sender, KeyEventArgs e)
         {
@@ -31,10 +28,7 @@ namespace MemoScope.Tools.RegexFilter
 
         private void Cancel()
         {
-            if( RegexCancelled != null)
-            {
-                RegexCancelled();
-            }
+            RegexCancelled?.Invoke();
             tbRegex.BackColor = Color.LightGray;
         }
 
@@ -42,19 +36,9 @@ namespace MemoScope.Tools.RegexFilter
         {
             try
             {
-                if (cbIgnoreCase.Checked)
-                {
-                    regex = new Regex(tbRegex.Text);
-                }
-                else
-                {
-                    regex = new Regex(tbRegex.Text, RegexOptions.IgnoreCase);
-                }
+                regex = cbIgnoreCase.Checked ? new Regex(tbRegex.Text) : new Regex(tbRegex.Text, RegexOptions.IgnoreCase);
 
-                if ( RegexApplied != null)
-                {
-                    RegexApplied(regex);
-                }
+                RegexApplied?.Invoke(regex);
                 tbRegex.BackColor = Color.LightGreen;
             }
             catch (ArgumentException)
@@ -64,19 +48,10 @@ namespace MemoScope.Tools.RegexFilter
             }
         }
 
-        private void btnApply_Click(object sender, EventArgs e)
-        {
-            Apply();
-        }
+        private void btnApply_Click(object sender, EventArgs e) => Apply();
 
-        private void btnCancel_Click(object sender, EventArgs e)
-        {
-            Cancel();
-        }
+        private void btnCancel_Click(object sender, EventArgs e) => Cancel();
 
-        private void cbIgnoreCase_CheckedChanged(object sender, EventArgs e)
-        {
-            Apply();
-        }
+        private void cbIgnoreCase_CheckedChanged(object sender, EventArgs e) => Apply();
     }
 }

@@ -5,9 +5,9 @@ namespace MemoScope.Modules.Process
 {
     public class ProcessInfoValue
     {
-        public string Name { get; private set; } 
-        public string Alias{ get; private set; } 
-        public string GroupName { get; private set; }
+        public string Name { get; }
+        public string Alias { get; }
+        public string GroupName { get; }
         public string Format { get; }
         public Func<ProcessWrapper, object> ValueGetter { get; }
         public Series Series { get; set; }
@@ -28,8 +28,7 @@ namespace MemoScope.Modules.Process
             {
                 var o = ValueGetter(proc);
                 Value = o;
-                var d = string.Format(Format, o);
-                return d;
+                return string.Format(Format, o);
             }
             catch
             {
@@ -37,9 +36,6 @@ namespace MemoScope.Modules.Process
             }
         }
 
-        public void Reset()
-        {
-            Series?.Points.Clear();
-        }
+        public void Reset() => Series?.Points.Clear();
     }
 }

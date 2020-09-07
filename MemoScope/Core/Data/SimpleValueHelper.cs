@@ -13,7 +13,7 @@ namespace MemoScope.Core.Data
 
         public static bool IsSimpleValue(ClrType type)
         {
-            if( type == null)
+            if (type == null)
             {
                 return false;
             }
@@ -31,12 +31,9 @@ namespace MemoScope.Core.Data
 
             return false;
         }
-        public static object GetSimpleValue(ClrObject obj)
-        {
-            return GetSimpleValue(obj.Address, obj.Type, obj.IsInterior);
-        }
+        public static object GetSimpleValue(ClrObject obj) => GetSimpleValue(obj.Address, obj.Type, obj.IsInterior);
 
-        public static object GetSimpleValue(ulong objAddress, ClrType clrType, bool isInterior=false)
+        public static object GetSimpleValue(ulong objAddress, ClrType clrType, bool isInterior = false)
         {
             if (objAddress == 0)
                 throw new NullReferenceException("ClrObject at is pointing to null address.");
@@ -92,14 +89,11 @@ namespace MemoScope.Core.Data
                 return "null";
 
             ClrType type = obj.Type;
-            if (type != null && type.IsEnum)
+            if (type?.IsEnum == true)
                 return type.GetEnumName(value) ?? value.ToString();
 
             DateTime? dateTime = value as DateTime?;
-            if (dateTime != null)
-                return GetDateTimeString(dateTime.Value);
-
-            return value.ToString();
+            return dateTime != null ? GetDateTimeString(dateTime.Value) : value.ToString();
         }
 
         private static byte[] ReadBuffer(ClrHeap heap, ulong address, int length)
@@ -107,10 +101,9 @@ namespace MemoScope.Core.Data
             byte[] buffer = new byte[length];
             int byteRead = heap.ReadMemory(address, buffer, 0, buffer.Length);
 
-            if (byteRead != length)
-                throw new InvalidOperationException(string.Format("Expected to read {0} bytes and actually read {1}", length, byteRead));
-
-            return buffer;
+            return byteRead != length
+                ? throw new InvalidOperationException(string.Format("Expected to read {0} bytes and actually read {1}", length, byteRead))
+                : buffer;
         }
 
         private static DateTime GetDateTime(ulong dateData)
@@ -121,9 +114,7 @@ namespace MemoScope.Core.Data
             const ulong KindUtc = 0x4000000000000000;
 
             long ticks = (long)(dateData & DateTimeTicksMask);
-            ulong internalKind = dateData & DateTimeKindMask;
-
-            switch (internalKind)
+            switch (dateData & DateTimeKindMask)
             {
                 case KindUnspecified:
                     return new DateTime(ticks, DateTimeKind.Unspecified);
@@ -173,10 +164,7 @@ namespace MemoScope.Core.Data
             return new IPAddress(bytes);
         }
 
-        private static string GetDateTimeString(DateTime dateTime)
-        {
-            return dateTime.ToString(@"yyyy-MM-dd HH\:mm\:ss.FFFFFFF") + GetDateTimeKindString(dateTime.Kind);
-        }
+        private static string GetDateTimeString(DateTime dateTime) => dateTime.ToString(@"yyyy-MM-dd HH\:mm\:ss.FFFFFFF") + GetDateTimeKindString(dateTime.Kind);
 
         private static string GetDateTimeKindString(DateTimeKind kind)
         {

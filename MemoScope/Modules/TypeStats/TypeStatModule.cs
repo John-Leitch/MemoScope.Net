@@ -1,24 +1,23 @@
-﻿using System.Collections.Generic;
-using System.Windows.Forms;
-using BrightIdeasSoftware;
+﻿using BrightIdeasSoftware;
 using MemoScope.Core;
-using WinFwk.UICommands;
-using MemoScope.Core.Helpers;
 using MemoScope.Core.Data;
+using MemoScope.Core.Helpers;
+using MemoScope.Modules.Arrays;
 using MemoScope.Modules.Instances;
 using NLog;
+using System.Collections.Generic;
 using System.Reflection;
-using MemoScope.Modules.Arrays;
-using System;
+using System.Windows.Forms;
+using WinFwk.UICommands;
 
 namespace MemoScope.Modules.TypeStats
 {
-    public partial class TypeStatModule : UIClrDumpModule, 
-        UIDataProvider<ClrDumpType>, 
+    public partial class TypeStatModule : UIClrDumpModule,
+        UIDataProvider<ClrDumpType>,
         UIDataProvider<AddressList>,
         UIDataProvider<ArraysAddressList>
     {
-        static Logger logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType.FullName);
+        private static readonly Logger logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType.FullName);
 
         private List<ClrTypeStats> typeStats;
         public TypeStatModule()
@@ -36,11 +35,11 @@ namespace MemoScope.Modules.TypeStats
         public void Setup(ClrDump clrDump)
         {
             ClrDump = clrDump;
-            Name = $"#{ClrDump.Id} - "+clrDump.DumpPath;
+            Name = $"#{ClrDump.Id} - " + clrDump.DumpPath;
             tbDumpPath.Text = clrDump.DumpPath;
         }
 
-        public override void  Init()
+        public override void Init()
         {
             Log("Computing type statistics...", WinFwk.UITools.Log.LogLevelType.Info);
             if (ClrDump.Runtime != null)
@@ -50,7 +49,7 @@ namespace MemoScope.Modules.TypeStats
             }
             else
             {
-                Summary = $"Error. Dump file not loaded !";
+                Summary = "Error. Dump file not loaded !";
             }
             Log("Type statistics computed.", WinFwk.UITools.Log.LogLevelType.Info);
         }
@@ -65,25 +64,14 @@ namespace MemoScope.Modules.TypeStats
             dlvTypeStats.SetTypeNameFilter<ClrTypeStats>(regexFilterControl);
         }
 
-        ClrDumpType UIDataProvider<ClrDumpType>.Data
-        {
-            get
-            {
-                var obj = dlvTypeStats.SelectedObject as ClrTypeStats;
-                if (obj != null)
-                {
-                    return new ClrDumpType(ClrDump, obj.Type);
-                }
-                return null;
-            }
-        }
+        ClrDumpType UIDataProvider<ClrDumpType>.Data => dlvTypeStats.SelectedObject is ClrTypeStats obj ? new ClrDumpType(ClrDump, obj.Type) : null;
 
         AddressList UIDataProvider<AddressList>.Data
         {
             get
             {
                 var dumpType = ((UIDataProvider<ClrDumpType>)this).Data;
-                if( dumpType == null)
+                if (dumpType == null)
                 {
                     return null;
                 }
@@ -98,27 +86,18 @@ namespace MemoScope.Modules.TypeStats
             get
             {
                 var dumpType = ((UIDataProvider<ClrDumpType>)this).Data;
-                if (dumpType == null)
-                {
-                    return null;
-                }
-                if( ! dumpType.IsArray)
-                {
-                    return null;
-                }
-                ArraysAddressList list = new ArraysAddressList(dumpType);
-                return list;
+                return dumpType == null ? null : !dumpType.IsArray ? null : new ArraysAddressList(dumpType);
             }
         }
 
         private void dlvTypeStats_CellClick(object sender, CellClickEventArgs e)
         {
-            if( e.ClickCount != 2)
+            if (e.ClickCount != 2)
             {
                 return;
             }
             var clrDumpType = ((UIDataProvider<ClrDumpType>)this).Data;
-            if(clrDumpType != null)
+            if (clrDumpType != null)
             {
                 TypeInstancesModule.Create(clrDumpType, this, mod => RequestDockModule(mod));
             }

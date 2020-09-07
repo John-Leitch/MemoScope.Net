@@ -5,9 +5,6 @@ namespace MemoScope.Core.Data
     public class SelectedClrDumpObjectMessage : AbstractUIMessage
     {
         public ClrDumpObject SelectedInstance { get; }
-        public SelectedClrDumpObjectMessage(ClrDumpObject selectedInstance)
-        {
-            SelectedInstance = selectedInstance;
-        }
+        public SelectedClrDumpObjectMessage(ClrDumpObject selectedInstance) => SelectedInstance = selectedInstance;
     }
 }

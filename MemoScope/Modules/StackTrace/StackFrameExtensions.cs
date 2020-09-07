@@ -6,9 +6,9 @@ using System.Collections.Generic;
 
 namespace MemoScope.Modules.StackTrace
 {
-    static class StackFrameExtensions
+    internal static class StackFrameExtensions
     {
-        static Dictionary<PdbInfo, PdbReader> s_pdbReaders = new Dictionary<PdbInfo, PdbReader>();
+        private static readonly Dictionary<PdbInfo, PdbReader> s_pdbReaders = new Dictionary<PdbInfo, PdbReader>();
         public static FileAndLineNumber FileAndLineNumber(this ClrStackFrame frame)
         {
             PdbReader reader = GetReaderForFrame(frame);
@@ -83,13 +83,10 @@ namespace MemoScope.Modules.StackTrace
             return reader;
         }
 
-        private static SymbolLocator GetSymbolLocator(ClrModule module)
-        {
-            return module.Runtime.DataTarget.SymbolLocator;
-        }
+        private static SymbolLocator GetSymbolLocator(ClrModule module) => module.Runtime.DataTarget.SymbolLocator;
     }
 
-    struct FileAndLineNumber
+    internal struct FileAndLineNumber
     {
         public string File;
         public int Line;
