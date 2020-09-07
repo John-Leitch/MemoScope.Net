@@ -88,8 +88,7 @@ namespace MemoScope.Core
             using (var locator = DacFinderFactory.CreateDactFinder("DacSymbols"))
             {
                 var clrVersion = Target.ClrVersions[0];
-                var dacFile = locator.FindDac(clrVersion);
-                Runtime = clrVersion.CreateRuntime(dacFile);
+                Runtime = clrVersion.CreateRuntime(clrVersion.LocalMatchingDac ?? locator.FindDac(clrVersion));
             }
         }
 
